@@ -1,0 +1,13 @@
+node_modules
+.pnpm-debug.log
+.DS_Store
+node_modules
+.env
+.env.*
+!.env.example
+.vercel
+.output
+
+client/build
+client/.svelte-kit
+client/package
