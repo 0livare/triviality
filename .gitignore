@@ -1,5 +1,4 @@
 node_modules
-.pnpm-debug.log
 .DS_Store
 node_modules
 .env
