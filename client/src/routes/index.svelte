@@ -1,60 +1,31 @@
-<script context="module" lang="ts">
-  export const prerender = true;
-</script>
+<script lang="ts" type="module">
+  import { io } from 'socket.io-client'
 
-<script lang="ts">
-  import Counter from '$lib/Counter.svelte';
+  const socket = io('ws://localhost:3001')
+  console.log('connecting')
+
+  // receive a message from the server
+  socket.on('hello from server', (...args) => {
+    console.log('message from server is:', args)
+  })
+
+  function sendMessage() {
+    console.log('message sent!')
+
+    // send a message to the server
+    socket.emit('hello from client', 5, '6', { 7: Uint8Array.from([8]) })
+  }
 </script>
 
 <svelte:head>
   <title>Home</title>
 </svelte:head>
 
-<section>
-  <h1>
-    <span class="welcome">
-      <picture>
-        <source srcset="svelte-welcome.webp" type="image/webp" />
-        <img src="svelte-welcome.png" alt="Welcome" />
-      </picture>
-    </span>
-
-    to your new<br />SvelteKit app
-  </h1>
-
-  <h2>
-    try editing <strong>src/routes/index.svelte</strong>
-  </h2>
-
-  <Counter />
-</section>
+<button on:click={sendMessage}>Send message</button>
 
 <style>
-  section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-  }
-
-  h1 {
-    width: 100%;
-  }
-
-  .welcome {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding: 0 0 calc(100% * 495 / 2048) 0;
-  }
-
-  .welcome img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    display: block;
+  :global(body) {
+    background: #2b2b2b;
+    color: white;
   }
 </style>
