@@ -1,44 +1,48 @@
 lockfileVersion: 5.4
 
-specifiers:
-  '@fontsource/fira-mono': ^4.5.0
-  '@sveltejs/adapter-auto': next
-  '@sveltejs/kit': next
-  '@types/cookie': ^0.5.1
-  '@typescript-eslint/eslint-plugin': ^5.27.0
-  '@typescript-eslint/parser': ^5.27.0
-  cookie: ^0.4.1
-  eslint: ^8.16.0
-  eslint-config-prettier: ^8.3.0
-  eslint-plugin-svelte3: ^4.0.0
-  prettier: ^2.6.2
-  prettier-plugin-svelte: ^2.7.0
-  svelte: ^3.46.0
-  svelte-check: ^2.7.1
-  svelte-preprocess: ^4.10.6
-  tslib: ^2.3.1
-  typescript: ^4.7.2
+importers:
 
-dependencies:
-  '@fontsource/fira-mono': 4.5.8
-  cookie: 0.4.2
+  client:
+    specifiers:
+      '@fontsource/fira-mono': ^4.5.0
+      '@sveltejs/adapter-auto': next
+      '@sveltejs/kit': next
+      '@types/cookie': ^0.5.1
+      '@typescript-eslint/eslint-plugin': ^5.27.0
+      '@typescript-eslint/parser': ^5.27.0
+      cookie: ^0.4.1
+      eslint: ^8.16.0
+      eslint-config-prettier: ^8.3.0
+      eslint-plugin-svelte3: ^4.0.0
+      prettier: ^2.6.2
+      prettier-plugin-svelte: ^2.7.0
+      svelte: ^3.46.0
+      svelte-check: ^2.7.1
+      svelte-preprocess: ^4.10.6
+      tslib: ^2.3.1
+      typescript: ^4.7.2
+    dependencies:
+      '@fontsource/fira-mono': 4.5.8
+      cookie: 0.4.1
+    devDependencies:
+      '@sveltejs/adapter-auto': 1.0.0-next.52
+      '@sveltejs/kit': 1.0.0-next.354_svelte@3.48.0
+      '@types/cookie': 0.5.1
+      '@typescript-eslint/eslint-plugin': 5.29.0_qqmbkyiaixvppdwswpytuf2hgm
+      '@typescript-eslint/parser': 5.29.0_b5e7v2qnwxfo6hmiq56u52mz3e
+      eslint: 8.18.0
+      eslint-config-prettier: 8.5.0_eslint@8.18.0
+      eslint-plugin-svelte3: 4.0.0_wy4erphnvhealet26qderqv6bu
+      prettier: 2.7.1
+      prettier-plugin-svelte: 2.7.0_nakrehnrzdf7fdea5k3a4dfy4m
+      svelte: 3.48.0
+      svelte-check: 2.7.2_svelte@3.48.0
+      svelte-preprocess: 4.10.7_lvfi2wesz6u4l5rfbnetbucfmm
+      tslib: 2.4.0
+      typescript: 4.7.4
 
-devDependencies:
-  '@sveltejs/adapter-auto': 1.0.0-next.52
-  '@sveltejs/kit': 1.0.0-next.354_svelte@3.48.0
-  '@types/cookie': 0.5.1
-  '@typescript-eslint/eslint-plugin': 5.29.0_qqmbkyiaixvppdwswpytuf2hgm
-  '@typescript-eslint/parser': 5.29.0_b5e7v2qnwxfo6hmiq56u52mz3e
-  eslint: 8.18.0
-  eslint-config-prettier: 8.5.0_eslint@8.18.0
-  eslint-plugin-svelte3: 4.0.0_wy4erphnvhealet26qderqv6bu
-  prettier: 2.7.1
-  prettier-plugin-svelte: 2.7.0_nakrehnrzdf7fdea5k3a4dfy4m
-  svelte: 3.48.0
-  svelte-check: 2.7.2_svelte@3.48.0
-  svelte-preprocess: 4.10.7_lvfi2wesz6u4l5rfbnetbucfmm
-  tslib: 2.4.0
-  typescript: 4.7.4
+  server:
+    specifiers: {}
 
 packages:
 
@@ -233,8 +237,8 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
-  /@types/node/18.0.0:
-    resolution: {integrity: sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==}
+  /@types/node/16.11.7:
+    resolution: {integrity: sha512-QB5D2sqfSjCmTuWcBWyJ+/44bcjO7VbjSbOE0ucoVbAsSNQc4Lt6QkgkVXkTDwkL4z/beecZNDvVX15D4P8Jbw==}
     dev: true
 
   /@types/pug/2.0.6:
@@ -244,7 +248,7 @@ packages:
   /@types/sass/1.43.1:
     resolution: {integrity: sha512-BPdoIt1lfJ6B7rw35ncdwBZrAssjcwzI5LByIrYs+tpXlj/CAkuVdRsgZDdP4lq5EjyWzwxZCqAoFyHKFwp32g==}
     dependencies:
-      '@types/node': 18.0.0
+      '@types/node': 16.11.7
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.29.0_qqmbkyiaixvppdwswpytuf2hgm:
@@ -585,8 +589,8 @@ packages:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
     dev: true
 
-  /cookie/0.4.2:
-    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
+  /cookie/0.4.1:
+    resolution: {integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==}
     engines: {node: '>= 0.6'}
     dev: false
 
