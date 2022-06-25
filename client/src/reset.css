@@ -1,0 +1,52 @@
+/* Adapted from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+/*
+  Allow percentage-based heights in the application
+*/
+html,
+body,
+#svelte {
+  height: 100%;
+}
+
+/*
+  Use regular antialiasing instead of subpixel antialiasing
+*/
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+  Prevent images from overflowing if their native width
+  is larger than the containing element
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+/*
+  Break up long words if needed to prevent text overflow
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  overflow-wrap: break-word;
+}
+
+/*
+  Create a root stacking context to guarantee that certain
+  high-priority elements (modals, dropdowns, tooltips) will
+  always show up above the other elements in our application
+*/
+#svelte {
+  isolation: isolate;
+}
