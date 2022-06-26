@@ -21,12 +21,24 @@
   //   socket.emit('hello from client', 5, '6', { 7: Uint8Array.from([8]) })
   // }
 
+  const socket = connect()
+  let questionNumber: number | null = null
+
+  socket.on('get current question number', (q) => {
+    questionNumber = q
+  })
+
   function handleSubmit(e: SubmitEvent) {
     // const formData = getFormData<FormShape>(e)
     // console.log(formData)
     const socket = connect()
     socket.emit('add user', $teamName)
-    goto('/waiting-room')
+
+    if (questionNumber) {
+      goto('/question/${questionNumber}')
+    } else {
+      goto('/waiting-room')
+    }
   }
 </script>
 

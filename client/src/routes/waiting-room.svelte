@@ -13,7 +13,9 @@
   })
 
   socket.on('get current question number', (questionNumber) => {
-    goto(`/question/${questionNumber}`)
+    if (questionNumber !== null) {
+      goto(`/question/${questionNumber}`)
+    }
   })
 
   function handleStartGame() {
@@ -33,7 +35,7 @@
   </ul>
 {/if}
 
-{#if isHost}
+{#if isHost && participants.length > 1}
   <button
     on:click={handleStartGame}
     class="mt-16 rounded-full w-52 h-52 bg-red-500 text-white font-fold text-5xl hover:animate-spin"

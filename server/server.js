@@ -6,18 +6,15 @@ const io = require('socket.io')(server, { cors: { origin: '*' } })
 
 const PORT = 3001
 
-const gameState = {
-  users: [],
-  questionNumber: null
-}
+let users = []
+let questionNumber = null
 
 const questions = [{ question: 'Who is the cutest?', answers: ['Mom', 'Dad', 'Lola', 'Fitz'] }]
 
 io.on('connection', (socket) => {
-  console.log('a user connected', gameState.questionNumber)
+  // console.log('a user connected')
 
   socket.on('add user', (userName) => {
-    const { users } = gameState
     if (users.includes(userName)) return
 
     users.push(userName)
@@ -26,11 +23,11 @@ io.on('connection', (socket) => {
   })
 
   socket.on('get users', () => {
-    socket.emit('get users', gameState.users)
+    socket.emit('get users', users)
   })
 
   socket.on('get current question number', () => {
-    socket.emit('get current question number', gameState.questionNumber)
+    socket.emit('get current question number', questionNumber)
   })
 
   socket.on('get question data', () => {
@@ -38,9 +35,8 @@ io.on('connection', (socket) => {
   })
 
   socket.on('start game', () => {
-    gameState.questionNuber = 1
-    console.log('gameState', gameState)
-    io.emit('get current question number', gameState.questionNumber)
+    questionNumber = 1
+    io.emit('get current question number', questionNumber)
   })
 
   socket.on('disconnect', () => {
