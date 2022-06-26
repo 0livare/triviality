@@ -1,25 +1,8 @@
 <script lang="ts" type="module">
   import { goto } from '$app/navigation'
-  import { getFormData } from '~/utils'
   import { teamName } from '~/lib/stores'
   import { connect } from '~/helpers'
-
-  import { io } from 'socket.io-client'
-
-  // const socket = io('ws://localhost:3001')
-  // console.log('connecting')
-
-  // // receive a message from the server
-  // socket.on('hello from server', (...args) => {
-  //   console.log('message from server is:', args)
-  // })
-
-  // function sendMessage() {
-  //   console.log('message sent!')
-
-  //   // send a message to the server
-  //   socket.emit('hello from client', 5, '6', { 7: Uint8Array.from([8]) })
-  // }
+  import Button from '$lib/button.svelte'
 
   const socket = connect()
   let questionNumber: number | null = null
@@ -28,10 +11,7 @@
     questionNumber = q
   })
 
-  function handleSubmit(e: SubmitEvent) {
-    // const formData = getFormData<FormShape>(e)
-    // console.log(formData)
-    const socket = connect()
+  function handleSubmit() {
     socket.emit('add user', $teamName)
 
     if (questionNumber) {
@@ -60,5 +40,5 @@
     />
   </label>
 
-  <button type="submit" class="mt-4">Continue</button>
+  <Button type="submit" class="mt-4">Continue</Button>
 </form>

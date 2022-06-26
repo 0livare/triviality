@@ -2,6 +2,7 @@
   import { goto } from '$app/navigation'
 
   import { page } from '$app/stores'
+  import Button from '$lib/button.svelte'
   import { teamName } from '$lib/stores'
   import { connect } from '~/helpers'
   import type { Question } from '~/types'
@@ -63,10 +64,6 @@
   {/if}
 
   {#if answer && isHost}
-    <button
-      on:click={handleNext}
-      class="p-4 border border-purple-500 mt-4 hover:bg-purple-200 hover:dark:bg-purple-900"
-      >Go to next question</button
-    >
+    <Button on:click={handleNext}>Go to next question</Button>
   {/if}
 </div>

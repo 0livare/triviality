@@ -59,24 +59,9 @@ io.on('connection', (socket) => {
 
     const teamAnswers = answers[teamName]
     teamAnswers[questionNumber - 1] = answer
-
-    console.log('answers', answers)
   })
 
   socket.on('get game result', () => {
-    // const resultsByTeam = Object.entries(answers).reduce((accum, [teamName, teamAnswers]) => {
-    //   accum[teamName] = teamAnswers.map((receivedAnswer, questionIndex) => {
-    //     const expectedAnswer = questions[questionIndex].answer
-    //     const isCorrect = receivedAnswer == expectedAnswer
-    //     return {
-    //       expected: expectedAnswer,
-    //       received: receivedAnswer,
-    //       isCorrect,
-    //     }
-    //   })
-    //   return accum
-    // }, {})
-
     const resultsByQuestionByTeam = questions.map(({ answer }, questionIndex) => {
       return users.reduce((accum, teamName) => {
         const teamAnswerToThisQuestion = answers[teamName]?.[questionIndex]
@@ -92,9 +77,14 @@ io.on('connection', (socket) => {
       }, {})
     })
 
-    console.log('about to return resultsByQuestionByTeam: ', resultsByQuestionByTeam)
-
     socket.emit('get game result', resultsByQuestionByTeam)
+  })
+
+  socket.on('reset game', () => {
+    users = []
+    questionNumber = null
+    io.emit('reset game')
+    console.log('RESET GAME')
   })
 
   socket.on('disconnect', () => {

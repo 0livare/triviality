@@ -14,6 +14,7 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.27.0
       '@typescript-eslint/parser': ^5.27.0
       autoprefixer: ^10.4.7
+      classnames: ^2.3.1
       cookie: ^0.4.1
       eslint: ^8.16.0
       eslint-config-prettier: ^8.3.0
@@ -30,6 +31,7 @@ importers:
       typescript: ^4.7.2
     dependencies:
       '@fontsource/fira-mono': 4.5.8
+      classnames: 2.3.1
       cookie: 0.4.2
       socket.io-client: 4.5.1
     devDependencies:
@@ -769,6 +771,10 @@ packages:
   /ci-info/2.0.0:
     resolution: {integrity: sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==}
     dev: true
+
+  /classnames/2.3.1:
+    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
+    dev: false
 
   /cli-boxes/2.2.1:
     resolution: {integrity: sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==}

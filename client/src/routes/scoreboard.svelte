@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
+  import Button from '$lib/button.svelte'
+  import { teamName } from '$lib/stores'
+
   import { connect } from '~/helpers'
   import type { GameResult, Question } from '~/types'
 
@@ -6,6 +10,12 @@
   let resultsByQuestionByTeam: GameResult
   let questions: Question[] | undefined
   let teams: string[] | undefined
+  $: isHost = teams?.indexOf($teamName || '') === 0
+
+  socket.emit('get users')
+  socket.on('get users', (users: string[]) => {
+    teams = users
+  })
 
   socket.on('get game result', (_results) => {
     resultsByQuestionByTeam = _results
@@ -24,6 +34,13 @@
     console.log('got teams', teams)
   })
   socket.emit('get users')
+
+  socket.on('reset game', () => {
+    goto('/')
+  })
+  function resetGame() {
+    socket.emit('reset game')
+  }
 </script>
 
 {#if resultsByQuestionByTeam && questions && teams}
@@ -46,4 +63,8 @@
   </ul>
 {:else}
   <p>Loading...</p>
+{/if}
+
+{#if isHost}
+  <Button on:click={resetGame} class="mt-16">Start a new game</Button>
 {/if}
