@@ -26,10 +26,7 @@
   <title>Join the game</title>
 </svelte:head>
 
-<form
-  on:submit|preventDefault={handleSubmit}
-  class="h-full flex flex-col justify-center items-center"
->
+<form on:submit|preventDefault={handleSubmit}>
   <label class="flex flex-col">
     Please enter your team name
     <input
@@ -40,5 +37,5 @@
     />
   </label>
 
-  <Button type="submit" class="mt-4">Continue</Button>
+  <Button type="submit" class="mt-4 w-full">Continue</Button>
 </form>

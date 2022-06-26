@@ -23,12 +23,12 @@
   }
 </script>
 
-<h1>Team: {$teamName}</h1>
-<p>Waiting for everyone to join</p>
+<h1 class="font-bold text-xl">Team: {$teamName}</h1>
+<p class="my-4">Waiting for everyone to join...</p>
 
 {#if participants.length}
   <p>Current participants:</p>
-  <ul>
+  <ul class="list-disc">
     {#each participants as participant}
       <li>{participant}</li>
     {/each}

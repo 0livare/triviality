@@ -44,11 +44,11 @@
 </script>
 
 {#if resultsByQuestionByTeam && questions && teams}
-  <h1>Results</h1>
-  <ul>
+  <h1 class="font-bold text-xl mb-4">Results</h1>
+  <ul class="list-disc">
     {#each questions as question, questionIndex}
       <li>
-        <strong>{question.prompt}:</strong>
+        {question.prompt}
         <ul>
           {#each teams as teamName}
             <li>
