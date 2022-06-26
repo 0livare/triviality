@@ -3,4 +3,6 @@
   import '../reset.css'
 </script>
 
-<slot />
+<div class="dark:bg-gray-800 dark:text-white h-full">
+  <slot />
+</div>

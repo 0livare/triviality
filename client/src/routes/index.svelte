@@ -52,7 +52,12 @@
 >
   <label class="flex flex-col">
     Please enter your team name
-    <input type="text" name="teamName" bind:value={$teamName} class="border border-gray-200" />
+    <input
+      type="text"
+      name="teamName"
+      bind:value={$teamName}
+      class="border border-gray-200 text-black"
+    />
   </label>
 
   <button type="submit" class="mt-4">Continue</button>

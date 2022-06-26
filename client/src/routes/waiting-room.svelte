@@ -35,7 +35,8 @@
   </ul>
 {/if}
 
-{#if isHost && participants.length > 1}
+<!-- {#if isHost && participants.length > 1} -->
+{#if isHost}
   <button
     on:click={handleStartGame}
     class="mt-16 rounded-full w-52 h-52 bg-red-500 text-white font-fold text-5xl hover:animate-spin"

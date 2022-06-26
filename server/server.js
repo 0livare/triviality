@@ -9,7 +9,12 @@ const PORT = 3001
 let users = []
 let questionNumber = null
 
-const questions = [{ question: 'Who is the cutest?', answers: ['Mom', 'Dad', 'Lola', 'Fitz'] }]
+const questions = [
+  { prompt: 'Who is the cutest?', choices: ['Kiermo', 'Zach', 'Lola', 'Fitz'], answer: 'Kiermo' },
+  { prompt: 'Who is the wittlest?', choices: ['Kiermo', 'Zach', 'Lola', 'Fitz'], answer: 'Lola' },
+  { prompt: 'Who is the longest?', choices: ['Kiermo', 'Zach', 'Lola', 'Fitz'], answer: 'Fitz' },
+]
+const answers = {}
 
 io.on('connection', (socket) => {
   // console.log('a user connected')
@@ -37,6 +42,59 @@ io.on('connection', (socket) => {
   socket.on('start game', () => {
     questionNumber = 1
     io.emit('get current question number', questionNumber)
+  })
+
+  socket.on('next question', () => {
+    const areQuestionsRemaining = questions.length > questionNumber
+    if (areQuestionsRemaining) {
+      questionNumber++
+    } else {
+      questionNumber = null
+    }
+    io.emit('get current question number', questionNumber)
+  })
+
+  socket.on('submit answer', (teamName, questionNumber, answer) => {
+    if (!answers[teamName]) answers[teamName] = []
+
+    const teamAnswers = answers[teamName]
+    teamAnswers[questionNumber - 1] = answer
+
+    console.log('answers', answers)
+  })
+
+  socket.on('get game result', () => {
+    // const resultsByTeam = Object.entries(answers).reduce((accum, [teamName, teamAnswers]) => {
+    //   accum[teamName] = teamAnswers.map((receivedAnswer, questionIndex) => {
+    //     const expectedAnswer = questions[questionIndex].answer
+    //     const isCorrect = receivedAnswer == expectedAnswer
+    //     return {
+    //       expected: expectedAnswer,
+    //       received: receivedAnswer,
+    //       isCorrect,
+    //     }
+    //   })
+    //   return accum
+    // }, {})
+
+    const resultsByQuestionByTeam = questions.map(({ answer }, questionIndex) => {
+      return users.reduce((accum, teamName) => {
+        const teamAnswerToThisQuestion = answers[teamName]?.[questionIndex]
+        const expected = answer
+        const received = teamAnswerToThisQuestion
+        const isCorrect = expected == received
+        accum[teamName] = { expected, received, isCorrect }
+
+        console.log(
+          `question: ${questionIndex}, team: ${teamName}, expected: ${expected}, received: ${received}`,
+        )
+        return accum
+      }, {})
+    })
+
+    console.log('about to return resultsByQuestionByTeam: ', resultsByQuestionByTeam)
+
+    socket.emit('get game result', resultsByQuestionByTeam)
   })
 
   socket.on('disconnect', () => {
