@@ -19,19 +19,16 @@
 
   socket.on('get game result', (_results) => {
     resultsByQuestionByTeam = _results
-    console.log('got game result', _results)
   })
   socket.emit('get game result')
 
   socket.on('get question data', (_questions) => {
     questions = _questions
-    console.log('got questions', questions)
   })
   socket.emit('get question data')
 
   socket.on('get users', (users) => {
     teams = users
-    console.log('got teams', teams)
   })
   socket.emit('get users')
 

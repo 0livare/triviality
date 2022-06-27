@@ -9,6 +9,7 @@ const PORT = 3001
 
 let users = []
 let questionNumber = null
+let answers = {}
 
 const questions = [
   {
@@ -43,7 +44,6 @@ const questions = [
     answer: 'All of the above',
   },
 ]
-const answers = {}
 
 io.on('connection', (socket) => {
   // console.log('a user connected')
@@ -52,7 +52,6 @@ io.on('connection', (socket) => {
     if (users.includes(userName)) return
 
     users.push(userName)
-    console.log('Adding user: ', userName)
     io.emit('get users', users)
   })
 
@@ -98,10 +97,6 @@ io.on('connection', (socket) => {
         const received = teamAnswerToThisQuestion
         const isCorrect = expected == received
         accum[teamName] = { expected, received, isCorrect }
-
-        console.log(
-          `question: ${questionIndex}, team: ${teamName}, expected: ${expected}, received: ${received}`,
-        )
         return accum
       }, {})
     })
@@ -112,8 +107,8 @@ io.on('connection', (socket) => {
   socket.on('reset game', () => {
     users = []
     questionNumber = null
+    answers = {}
     io.emit('reset game')
-    console.log('RESET GAME')
   })
 
   socket.on('disconnect', () => {
@@ -122,5 +117,5 @@ io.on('connection', (socket) => {
 })
 
 server.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}`)
+  console.info(`Listening on http://localhost:${PORT}`)
 })
