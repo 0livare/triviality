@@ -38,7 +38,6 @@
   socket.emit('get current question number')
 
   socket.on('get question data', (questionData: Question[]) => {
-    console.log('questionData', questionData)
     questions = questionData
   })
   socket.emit('get question data')
@@ -46,6 +45,10 @@
   function handleNext() {
     socket.emit('next question')
   }
+
+  socket.on('reset game', () => {
+    goto('/')
+  })
 </script>
 
 <div class="p-4">

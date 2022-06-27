@@ -43,28 +43,30 @@
   }
 </script>
 
-{#if resultsByQuestionByTeam && questions && teams}
-  <h1 class="font-bold text-xl mb-4">Results</h1>
-  <ul class="list-disc">
-    {#each questions as question, questionIndex}
-      <li>
-        {question.prompt}
-        <ul>
-          {#each teams as teamName}
-            <li>
-              <strong>{teamName}:</strong>
-              {resultsByQuestionByTeam[questionIndex][teamName]?.received || '-'}
-              {resultsByQuestionByTeam[questionIndex][teamName]?.isCorrect ? '✅' : '❌'}
-            </li>
-          {/each}
-        </ul>
-      </li>
-    {/each}
-  </ul>
-{:else}
-  <p>Loading...</p>
-{/if}
+<div class="p-4">
+  {#if resultsByQuestionByTeam && questions && teams}
+    <h1 class="font-bold text-3xl mb-4">Results</h1>
+    <ul>
+      {#each questions as question, questionIndex}
+        <li class="my-10">
+          <strong>{question.prompt}</strong>
+          <ul class="list-disc ml-8 py-2">
+            {#each teams as teamName}
+              <li>
+                <strong>{teamName}:</strong>
+                {resultsByQuestionByTeam[questionIndex][teamName]?.received || '-'}
+                {resultsByQuestionByTeam[questionIndex][teamName]?.isCorrect ? '✅' : '❌'}
+              </li>
+            {/each}
+          </ul>
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <p>Loading...</p>
+  {/if}
 
-{#if isHost}
-  <Button on:click={resetGame} class="mt-16">Start a new game</Button>
-{/if}
+  {#if isHost}
+    <Button on:click={resetGame} class="mt-16">Start a new game</Button>
+  {/if}
+</div>
