@@ -29,9 +29,9 @@
     }
 
     if (q == null) {
-      goto('/scoreboard')
+      goto('/trivia/scoreboard')
     } else if (q !== questionNumber) {
-      window.location.href = `/question/${q}`
+      window.location.href = `/trivia/question/${q}`
     }
   })
 
@@ -47,7 +47,7 @@
   }
 
   socket.on('reset game', () => {
-    goto('/')
+    goto('/trivia')
   })
 </script>
 

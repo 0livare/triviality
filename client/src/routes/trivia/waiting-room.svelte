@@ -14,7 +14,7 @@
 
   socket.on('get current question number', (questionNumber) => {
     if (questionNumber !== null) {
-      goto(`/question/${questionNumber}`)
+      goto(`/trivia/question/${questionNumber}`)
     }
   })
 

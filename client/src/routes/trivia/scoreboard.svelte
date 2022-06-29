@@ -33,7 +33,7 @@
   socket.emit('get users')
 
   socket.on('reset game', () => {
-    goto('/')
+    goto('/trivia')
   })
   function resetGame() {
     socket.emit('reset game')
