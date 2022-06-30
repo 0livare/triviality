@@ -1,14 +1,15 @@
-import { io } from 'socket.io-client'
+import { io, type Socket } from 'socket.io-client'
+
+let socket: Socket
 
 export function connect() {
-  // return io('ws://localhost:3001')
+  if (socket) return socket
 
-  // return io('http://147.182.246.145')
-  // return io('https://olivare.net')
-  return io('wss://olivare.net')
+  const useLocalServer = true
+  const isDev = process.env.NODE_ENV === 'development'
 
-  // See: https://socket.io/docs/v3/troubleshooting-connection-issues/
-  // return io('http://147.182.246.145', {
-  //   rejectUnauthorized: false, // WARN: please do not do this in production
-  // })
+  const serverUrl = isDev && useLocalServer ? 'ws://localhost:3001' : 'wss://trivia.olivare.net'
+  console.info('Connecting to ', serverUrl)
+  socket = io(serverUrl)
+  return socket
 }

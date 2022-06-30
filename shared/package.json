@@ -1,0 +1,15 @@
+{
+  "name": "triviality-shared",
+  "version": "1.0.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/umd/index.js",
+  "scripts": {
+    "clean": "rm -rf dist/* || 1",
+    "build": "pnpm clean && tsc -p tsconfig.cjs.json && tsc -p tsconfig.umd.json"
+  },
+  "author": "Zach Posten <github.com/zposten",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.7.2"
+  }
+}
