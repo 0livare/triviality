@@ -1,19 +1,18 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon ./server.js",
     "start": "node ./server.js",
     "preinstall": "npx only-allow pnpm"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Zach Posten <github.com/zposten>",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "triviality-shared": "workspace:1.0.0",
     "socket.io": "^4.5.1"
   },
   "devDependencies": {

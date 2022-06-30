@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { TriviaEvents } from 'triviality-shared'
   import { goto } from '$app/navigation'
   import Button from '$lib/button.svelte'
   import { teamName } from '$lib/stores'
@@ -12,31 +13,31 @@
   let teams: string[] | undefined
   $: isHost = teams?.indexOf($teamName || '') === 0
 
-  socket.emit('get users')
-  socket.on('get users', (users: string[]) => {
+  socket.emit(TriviaEvents.GetUsers)
+  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
     teams = users
   })
 
-  socket.on('get game result', (_results) => {
+  socket.on(TriviaEvents.GetGameResult, (_results) => {
     resultsByQuestionByTeam = _results
   })
-  socket.emit('get game result')
+  socket.emit(TriviaEvents.GetGameResult)
 
-  socket.on('get question data', (_questions) => {
+  socket.on(TriviaEvents.GetQuestionData, (_questions) => {
     questions = _questions
   })
-  socket.emit('get question data')
+  socket.emit(TriviaEvents.GetQuestionData)
 
-  socket.on('get users', (users) => {
+  socket.on(TriviaEvents.GetUsers, (users) => {
     teams = users
   })
-  socket.emit('get users')
+  socket.emit(TriviaEvents.GetUsers)
 
-  socket.on('reset game', () => {
+  socket.on(TriviaEvents.ResetGame, () => {
     goto('/trivia')
   })
   function resetGame() {
-    socket.emit('reset game')
+    socket.emit(TriviaEvents.ResetGame)
   }
 </script>
 

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
-
-  import { page } from '$app/stores'
+  import { TriviaEvents } from 'triviality-shared'
   import Button from '$lib/button.svelte'
   import { teamName } from '$lib/stores'
   import { connect } from '~/helpers'
@@ -17,32 +15,32 @@
   let teams: string[] = []
   $: isHost = teams.indexOf($teamName || '') === 0
 
-  socket.emit('get users')
-  socket.on('get users', (users: string[]) => {
+  socket.emit(TriviaEvents.GetUsers)
+  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
     teams = users
   })
 
-  socket.on('get current question number', (questionNumber) => {
+  socket.on(TriviaEvents.GetCurrentQuestionNumber, (questionNumber) => {
     questionIndex = questionNumber - 1
   })
 
-  socket.emit('get current question number')
+  socket.emit(TriviaEvents.GetCurrentQuestionNumber)
 
-  socket.on('get question data', (questionData: Question[]) => {
+  socket.on(TriviaEvents.GetQuestionData, (questionData: Question[]) => {
     questions = questionData
   })
-  socket.emit('get question data')
+  socket.emit(TriviaEvents.GetQuestionData)
 
   function handleNext() {
-    socket.emit('next question')
+    socket.emit(TriviaEvents.NextQuestion)
   }
 
   function handleReset() {
-    socket.emit('reset game')
+    socket.emit(TriviaEvents.ResetGame)
   }
 
   function handleStartGame() {
-    socket.emit('start game')
+    socket.emit(TriviaEvents.StartGame)
   }
 </script>
 

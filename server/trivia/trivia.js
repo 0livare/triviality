@@ -1,3 +1,4 @@
+const { TriviaEvents } = require('triviality-shared')
 const questions = require('./questions')
 
 module.exports = function TriviaGame(io) {
@@ -6,48 +7,48 @@ module.exports = function TriviaGame(io) {
   let answers = {}
 
   function register(socket) {
-    socket.on('add user', (userName) => {
+    socket.on(TriviaEvents.AddUser, (userName) => {
       if (users.includes(userName)) return
 
       users.push(userName)
-      io.emit('get users', users)
+      io.emit(TriviaEvents.GetUsers, users)
     })
 
-    socket.on('get users', () => {
-      socket.emit('get users', users)
+    socket.on(TriviaEvents.GetUsers, () => {
+      socket.emit(TriviaEvents.GetUsers, users)
     })
 
-    socket.on('get current question number', () => {
-      socket.emit('get current question number', questionNumber)
+    socket.on(TriviaEvents.GetCurrentQuestionNumber, () => {
+      socket.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
-    socket.on('get question data', () => {
-      socket.emit('get question data', questions)
+    socket.on(TriviaEvents.GetQuestionData, () => {
+      socket.emit(TriviaEvents.GetQuestionData, questions)
     })
 
-    socket.on('start game', () => {
+    socket.on(TriviaEvents.StartGame, () => {
       questionNumber = 1
-      io.emit('get current question number', questionNumber)
+      io.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
-    socket.on('next question', () => {
+    socket.on(TriviaEvents.NextQuestion, () => {
       const areQuestionsRemaining = questions.length > questionNumber
       if (areQuestionsRemaining) {
         questionNumber++
       } else {
         questionNumber = null
       }
-      io.emit('get current question number', questionNumber)
+      io.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
-    socket.on('submit answer', (teamName, questionNumber, answer) => {
+    socket.on(TriviaEvents.SubmitAnswer, (teamName, questionNumber, answer) => {
       if (!answers[teamName]) answers[teamName] = []
 
       const teamAnswers = answers[teamName]
       teamAnswers[questionNumber - 1] = answer
     })
 
-    socket.on('get game result', () => {
+    socket.on(TriviaEvents.GetGameResult, () => {
       const resultsByQuestionByTeam = questions.map(({ answer }, questionIndex) => {
         return users.reduce((accum, teamName) => {
           const teamAnswerToThisQuestion = answers[teamName]?.[questionIndex]
@@ -59,14 +60,14 @@ module.exports = function TriviaGame(io) {
         }, {})
       })
 
-      socket.emit('get game result', resultsByQuestionByTeam)
+      socket.emit(TriviaEvents.GetGameResult, resultsByQuestionByTeam)
     })
 
-    socket.on('reset game', () => {
+    socket.on(TriviaEvents.ResetGame, () => {
       users = []
       questionNumber = null
       answers = {}
-      io.emit('reset game')
+      io.emit(TriviaEvents.ResetGame)
     })
   }
 

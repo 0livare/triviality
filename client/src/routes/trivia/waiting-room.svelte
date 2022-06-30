@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { TriviaEvents } from 'triviality-shared'
   import { teamName } from '~/lib/stores'
   import { goto } from '$app/navigation'
   import { connect } from '~/helpers'
@@ -7,19 +8,19 @@
   let participants: string[] = []
   $: isHost = participants.indexOf($teamName || '') === 0
 
-  socket.emit('get users')
-  socket.on('get users', (users: string[]) => {
+  socket.emit(TriviaEvents.GetUsers)
+  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
     participants = users
   })
 
-  socket.on('get current question number', (questionNumber) => {
+  socket.on(TriviaEvents.GetCurrentQuestionNumber, (questionNumber) => {
     if (questionNumber !== null) {
       goto(`/trivia/question/${questionNumber}`)
     }
   })
 
   function handleStartGame() {
-    socket.emit('start game')
+    socket.emit(TriviaEvents.StartGame)
   }
 </script>
 

@@ -1,4 +1,5 @@
 <script lang="ts" type="module">
+  import { TriviaEvents } from 'triviality-shared'
   import { goto } from '$app/navigation'
   import { teamName } from '~/lib/stores'
   import { connect } from '~/helpers'
@@ -7,12 +8,12 @@
   const socket = connect()
   let questionNumber: number | null = null
 
-  socket.on('get current question number', (q) => {
+  socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
     questionNumber = q
   })
 
   function handleSubmit() {
-    socket.emit('add user', $teamName)
+    socket.emit(TriviaEvents.AddUser, $teamName)
 
     if (questionNumber) {
       goto(`/trivia/question/${questionNumber}`)
