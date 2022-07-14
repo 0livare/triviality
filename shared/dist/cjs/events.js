@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.BuzzEvents = exports.TriviaEvents = void 0;
+exports.GenericEvents = exports.BuzzEvents = exports.TriviaEvents = void 0;
 var TriviaEvents;
 (function (TriviaEvents) {
     TriviaEvents["AddUser"] = "trivia--add user";
@@ -20,3 +20,9 @@ var BuzzEvents;
     BuzzEvents["StartGame"] = "buzz--start game";
     BuzzEvents["ResetGame"] = "buzz--reset game";
 })(BuzzEvents = exports.BuzzEvents || (exports.BuzzEvents = {}));
+var GenericEvents;
+(function (GenericEvents) {
+    GenericEvents["JoinRoom"] = "join room";
+    GenericEvents["JoinedRoom"] = "joined room";
+    GenericEvents["HostRoom"] = "host room";
+})(GenericEvents = exports.GenericEvents || (exports.GenericEvents = {}));
