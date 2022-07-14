@@ -6,7 +6,7 @@ module.exports = function TriviaGame(io) {
   let questionNumber = null
   let answers = {}
 
-  function register(socket) {
+  function addParticipant(socket) {
     socket.on(TriviaEvents.AddUser, (userName) => {
       if (users.includes(userName)) return
 
@@ -71,9 +71,9 @@ module.exports = function TriviaGame(io) {
     })
   }
 
-  function destroy(socket) {
+  function removeParticipant(socket) {
     socket.removeAllListeners()
   }
 
-  return { register, destroy }
+  return { addParticipant, removeParticipant }
 }
