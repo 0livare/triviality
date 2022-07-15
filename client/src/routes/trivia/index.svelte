@@ -1,11 +1,12 @@
 <script lang="ts" type="module">
   import { goto } from '$app/navigation'
   import { GenericEvents, GameTypes } from 'triviality-shared'
+  import { userId } from '~/lib/stores'
 
   import Button from '~/lib/button.svelte'
   import { connect } from '~/helpers'
 
-  const socket = connect()
+  const { socket } = connect()
 
   socket.on(GenericEvents.HostRoom, (gameCode) => {
     if (gameCode) {
@@ -14,7 +15,10 @@
   })
 
   function handleStartNewGame() {
-    socket.emit(GenericEvents.HostRoom, GameTypes.Trivia)
+    socket.emit(GenericEvents.HostRoom, {
+      gameType: GameTypes.Trivia,
+      userId: $userId,
+    })
   }
 </script>
 

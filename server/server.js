@@ -13,9 +13,9 @@ const PORT = 3001
 let games = {}
 
 io.on('connection', (socket) => {
-  // console.log('connected')
+  console.log('CONNECTED', socket.id)
 
-  socket.on(GenericEvents.HostRoom, (gameType) => {
+  socket.on(GenericEvents.HostRoom, ({ gameType, userId }) => {
     let gameCode = generateGameCode(Object.keys(games))
     let game
 
@@ -30,22 +30,27 @@ io.on('connection', (socket) => {
         return
     }
 
-    game.addParticipant(socket)
-    games[gameCode] = game
+    console.log('host room', { gameCode, gameType, userId })
 
+    games[gameCode] = game
     socket.join(gameCode)
     socket.emit(GenericEvents.HostRoom, gameCode)
   })
 
-  socket.on(GenericEvents.JoinRoom, ({ teamName, gameCode }) => {
+  socket.on(GenericEvents.JoinRoom, ({ teamName, gameCode, userId }) => {
     let game = games[gameCode]
     if (!game || !teamName) return
 
-    console.log('join room', { teamName, gameCode })
+    console.log('join room', { teamName, gameCode, userId })
 
-    game.addParticipant(socket, teamName)
+    game.addParticipant({ teamName, userId })
+    game.registerEvents({ socket, gameCode, teamName, userId })
     socket.join(gameCode)
     socket.emit(GenericEvents.JoinedRoom, gameCode)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('DISCONNECTED', socket.id)
   })
 })
 

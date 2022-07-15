@@ -1,14 +1,15 @@
 <script lang="ts" type="module">
   import { TriviaEvents, GenericEvents } from 'triviality-shared'
+
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
-  import { teamName } from '~/lib/stores'
-  import { connect } from '~/helpers'
   import Button from '$lib/button.svelte'
+  import { connect } from '~/helpers'
+  import { teamName, userId } from '~/lib/stores'
 
   const gameCode = $page.params.gameCode
 
-  const socket = connect()
+  const { socket } = connect()
   let questionNumber: number | null = null
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
@@ -16,10 +17,10 @@
   })
 
   function handleSubmit() {
-    socket.emit(GenericEvents.JoinRoom, { teamName: $teamName, gameCode })
+    socket.emit(GenericEvents.JoinRoom, { teamName: $teamName, gameCode, userId: $userId })
 
     if (questionNumber) {
-      goto(`/trivia/${gameCode}/question/${questionNumber}`)
+      goto(`/trivia/${gameCode}/question`)
     } else {
       goto(`/trivia/${gameCode}`)
     }

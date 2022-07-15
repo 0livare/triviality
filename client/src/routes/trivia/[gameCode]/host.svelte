@@ -2,22 +2,22 @@
   import { TriviaEvents } from 'triviality-shared'
   import Button from '$lib/button.svelte'
   import { teamName } from '$lib/stores'
-  import { connect } from '~/helpers'
-  import type { Question } from '~/types'
+  import { connect, determineHost } from '~/helpers'
+  import type { Question, User } from '~/types'
 
   let questionIndex = 0
 
-  const socket = connect()
+  const { socket } = connect()
   let questions: null | Question[] = null
   let question: Question | undefined
   $: question = questions?.[questionIndex]
 
-  let teams: string[] = []
-  $: isHost = teams.indexOf($teamName || '') === 0
+  let participants: User[] = []
+  $: isHost = determineHost(participants)
 
   socket.emit(TriviaEvents.GetUsers)
-  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
-    teams = users
+  socket.on(TriviaEvents.GetUsers, (users: User[]) => {
+    participants = users
   })
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (questionNumber) => {

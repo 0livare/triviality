@@ -5,7 +5,7 @@
   import { connect } from '~/helpers'
   import Button from '$lib/button.svelte'
 
-  const socket = connect()
+  const { socket } = connect()
   let questionNumber: number | null = null
   let gameCode: string | null = null
 
@@ -18,7 +18,7 @@
     socket.emit(GenericEvents.JoinRoom, { teamName: $teamName, gameCode })
 
     if (questionNumber) {
-      goto(`/trivia/${gameCode}/question/${questionNumber}`)
+      goto(`/trivia/${gameCode}/question}`)
     } else {
       goto(`/trivia/${gameCode}`)
     }

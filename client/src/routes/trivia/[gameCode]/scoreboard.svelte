@@ -4,18 +4,19 @@
   import Button from '$lib/button.svelte'
   import { teamName } from '$lib/stores'
 
-  import { connect } from '~/helpers'
-  import type { GameResult, Question } from '~/types'
+  import { connect, determineHost } from '~/helpers'
+  import type { GameResult, Question, User } from '~/types'
 
-  const socket = connect()
+  const { socket } = connect()
   let resultsByQuestionByTeam: GameResult
   let questions: Question[] | undefined
-  let teams: string[] | undefined
-  $: isHost = teams?.indexOf($teamName || '') === 0
+
+  let participants: User[] | undefined
+  $: isHost = determineHost(participants)
 
   socket.emit(TriviaEvents.GetUsers)
-  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
-    teams = users
+  socket.on(TriviaEvents.GetUsers, (users: User[]) => {
+    participants = users
   })
 
   socket.on(TriviaEvents.GetGameResult, (_results) => {
@@ -29,7 +30,7 @@
   socket.emit(TriviaEvents.GetQuestionData)
 
   socket.on(TriviaEvents.GetUsers, (users) => {
-    teams = users
+    participants = users
   })
   socket.emit(TriviaEvents.GetUsers)
 
@@ -42,18 +43,20 @@
 </script>
 
 <div class="p-4">
-  {#if resultsByQuestionByTeam && questions && teams}
+  {#if resultsByQuestionByTeam && questions && participants}
     <h1 class="font-bold text-3xl mb-4">Results</h1>
     <ul>
       {#each questions as question, questionIndex}
         <li class="my-10">
           <strong>{question.prompt}</strong>
           <ul class="list-disc ml-8 py-2">
-            {#each teams as teamName}
+            {#each participants as participant}
               <li>
-                <strong>{teamName}:</strong>
-                {resultsByQuestionByTeam[questionIndex][teamName]?.received || '-'}
-                {resultsByQuestionByTeam[questionIndex][teamName]?.isCorrect ? '✅' : '❌'}
+                <strong>{participant.teamName}:</strong>
+                {resultsByQuestionByTeam[questionIndex][participant.teamName]?.received || '-'}
+                {resultsByQuestionByTeam[questionIndex][participant.teamName]?.isCorrect
+                  ? '✅'
+                  : '❌'}
               </li>
             {/each}
           </ul>

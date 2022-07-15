@@ -1,21 +1,25 @@
 <script lang="ts">
   import { TriviaEvents } from 'triviality-shared'
-  import { teamName } from '~/lib/stores'
+  import { teamName, userId } from '~/lib/stores'
   import { goto } from '$app/navigation'
-  import { connect } from '~/helpers'
+  import { connect, determineHost } from '~/helpers'
+  import { page } from '$app/stores'
+  import type { User } from '~/types'
 
-  const socket = connect()
-  let participants: string[] = []
-  $: isHost = participants.indexOf($teamName || '') === 0
+  const gameCode = $page.params.gameCode
+
+  const { socket } = connect()
+  let participants: User[] = []
+  $: isHost = determineHost(participants)
 
   socket.emit(TriviaEvents.GetUsers)
-  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
+  socket.on(TriviaEvents.GetUsers, (users: User[]) => {
     participants = users
   })
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (questionNumber) => {
     if (questionNumber !== null) {
-      goto(`/trivia/question/${questionNumber}`)
+      goto(`/trivia/${gameCode}/question`)
     }
   })
 
@@ -31,7 +35,7 @@
   <p>Current participants:</p>
   <ul class="list-disc">
     {#each participants as participant}
-      <li>{participant}</li>
+      <li>{participant.teamName}</li>
     {/each}
   </ul>
 {/if}

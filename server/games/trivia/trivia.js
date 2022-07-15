@@ -6,12 +6,19 @@ module.exports = function TriviaGame(io, gameCode) {
   let questionNumber = null
   let answers = {}
 
-  function addParticipant(socket, teamName) {
-    if (teamName && !users.includes(teamName)) {
-      users.push(teamName)
-      io.in(gameCode).emit(TriviaEvents.GetUsers, users)
-    }
+  function addParticipant({ teamName, userId }) {
+    const userAlreadyExists = !!users.find((user) => user.id === userId)
+    if (userAlreadyExists) return
 
+    users.push({
+      id: userId,
+      teamName,
+    })
+
+    io.in(gameCode).emit(TriviaEvents.GetUsers, users)
+  }
+
+  function registerEvents({ socket, gameCode, teamName, userId }) {
     // socket.on(TriviaEvents.AddUser, (userName) => {
     //   if (users.includes(teamName)) return
 
@@ -24,10 +31,12 @@ module.exports = function TriviaGame(io, gameCode) {
     })
 
     socket.on(TriviaEvents.GetCurrentQuestionNumber, () => {
+      console.log('get question number')
       socket.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
     socket.on(TriviaEvents.GetQuestionData, () => {
+      console.log('get questions')
       socket.emit(TriviaEvents.GetQuestionData, questions)
     })
 
@@ -37,13 +46,14 @@ module.exports = function TriviaGame(io, gameCode) {
     })
 
     socket.on(TriviaEvents.NextQuestion, () => {
+      console.log('next question')
       const areQuestionsRemaining = questions.length > questionNumber
       if (areQuestionsRemaining) {
         questionNumber++
       } else {
         questionNumber = null
       }
-      io.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
+      io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
     socket.on(TriviaEvents.SubmitAnswer, (teamName, questionNumber, answer) => {
@@ -80,5 +90,5 @@ module.exports = function TriviaGame(io, gameCode) {
     socket.removeAllListeners()
   }
 
-  return { addParticipant, removeParticipant }
+  return { addParticipant, removeParticipant, registerEvents }
 }
