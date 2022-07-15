@@ -1,18 +1,23 @@
 const { TriviaEvents } = require('triviality-shared')
 const questions = require('./questions')
 
-module.exports = function TriviaGame(io) {
+module.exports = function TriviaGame(io, gameCode) {
   let users = []
   let questionNumber = null
   let answers = {}
 
-  function addParticipant(socket) {
-    socket.on(TriviaEvents.AddUser, (userName) => {
-      if (users.includes(userName)) return
+  function addParticipant(socket, teamName) {
+    if (teamName && !users.includes(teamName)) {
+      users.push(teamName)
+      io.in(gameCode).emit(TriviaEvents.GetUsers, users)
+    }
 
-      users.push(userName)
-      io.emit(TriviaEvents.GetUsers, users)
-    })
+    // socket.on(TriviaEvents.AddUser, (userName) => {
+    //   if (users.includes(teamName)) return
+
+    //   users.push(teamName)
+    //   io.in(gameCode).emit(TriviaEvents.GetUsers, users)
+    // })
 
     socket.on(TriviaEvents.GetUsers, () => {
       socket.emit(TriviaEvents.GetUsers, users)

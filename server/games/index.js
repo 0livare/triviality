@@ -1,4 +1,4 @@
 module.exports = {
-  ...require('./trivia'),
-  ...require('./buzz'),
+  TriviaGame: require('./trivia'),
+  BuzzGame: require('./buzz'),
 }

@@ -1,7 +1,7 @@
 const { BuzzEvents } = require('triviality-shared')
 
 // This is just a copy-pate of TriviaGame for the moment
-module.exports = function BuzzGame(io) {
+module.exports = function BuzzGame(io, gameCode) {
   let users = []
   let questionNumber = null
   let answers = {}

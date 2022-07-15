@@ -13,34 +13,38 @@ const PORT = 3001
 let games = {}
 
 io.on('connection', (socket) => {
-  // console.log('connected', socket)
+  // console.log('connected')
 
-  io.on(GenericEvents.HostRoom, (gameType) => {
+  socket.on(GenericEvents.HostRoom, (gameType) => {
+    let gameCode = generateGameCode(Object.keys(games))
     let game
 
     switch (gameType) {
       case GameTypes.Trivia:
-        game = TriviaGame(io)
+        game = TriviaGame(io, gameCode)
         break
       case GameTypes.Buzz:
-        game = BuzzGame(io)
+        game = BuzzGame(io, gameCode)
         break
+      default:
+        return
     }
 
     game.addParticipant(socket)
-    let gameCode = generateGameCode(Object.keys(games))
     games[gameCode] = game
 
-    // TODO: Use socket.io to add this socket to a room
-    // with room id of gameCode
+    socket.join(gameCode)
     socket.emit(GenericEvents.HostRoom, gameCode)
   })
 
-  io.on(GenericEvents.JoinRoom, (gameCode) => {
+  socket.on(GenericEvents.JoinRoom, ({ teamName, gameCode }) => {
     let game = games[gameCode]
-    if (!game) return
+    if (!game || !teamName) return
 
-    game.addParticipant(socket)
+    console.log('join room', { teamName, gameCode })
+
+    game.addParticipant(socket, teamName)
+    socket.join(gameCode)
     socket.emit(GenericEvents.JoinedRoom, gameCode)
   })
 })

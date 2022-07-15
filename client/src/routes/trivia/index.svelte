@@ -1,42 +1,26 @@
 <script lang="ts" type="module">
-  import { TriviaEvents } from 'triviality-shared'
   import { goto } from '$app/navigation'
-  import { teamName } from '~/lib/stores'
+  import { GenericEvents, GameTypes } from 'triviality-shared'
+
+  import Button from '~/lib/button.svelte'
   import { connect } from '~/helpers'
-  import Button from '$lib/button.svelte'
 
   const socket = connect()
-  let questionNumber: number | null = null
 
-  socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
-    questionNumber = q
+  socket.on(GenericEvents.HostRoom, (gameCode) => {
+    if (gameCode) {
+      goto(`/trivia/${gameCode}/start`)
+    }
   })
 
-  function handleSubmit() {
-    socket.emit(TriviaEvents.AddUser, $teamName)
-
-    if (questionNumber) {
-      goto(`/trivia/question/${questionNumber}`)
-    } else {
-      goto('/trivia/waiting-room')
-    }
+  function handleStartNewGame() {
+    socket.emit(GenericEvents.HostRoom, GameTypes.Trivia)
   }
 </script>
 
 <svelte:head>
-  <title>Join the game</title>
+  <title>Welcome to Triviality!</title>
 </svelte:head>
 
-<form on:submit|preventDefault={handleSubmit}>
-  <label class="flex flex-col">
-    Please enter your team name
-    <input
-      type="text"
-      name="teamName"
-      bind:value={$teamName}
-      class="border border-gray-200 text-black"
-    />
-  </label>
-
-  <Button type="submit" class="mt-4 w-full">Continue</Button>
-</form>
+<Button class="mt-4 w-full" href="/trivia/join">Join game</Button>
+<Button class="mt-4 w-full" on:click={handleStartNewGame}>Start a new game</Button>
