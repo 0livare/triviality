@@ -3,7 +3,7 @@
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import Button from '$lib/button.svelte'
-  import { teamName } from '$lib/stores'
+  import { userId } from '$lib/stores'
   import { connectToTriviaGame, determineHost } from '~/helpers'
   import type { Question, User } from '~/types'
 
@@ -26,7 +26,7 @@
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
     if (answer && q !== questionNumber) {
-      socket.emit(TriviaEvents.SubmitAnswer, $teamName, questionNumber, answer)
+      socket.emit(TriviaEvents.SubmitAnswer, { userId: $userId, questionNumber, answer })
     }
 
     if (q == null) {

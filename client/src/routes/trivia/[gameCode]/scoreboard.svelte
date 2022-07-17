@@ -53,10 +53,8 @@
             {#each participants as participant}
               <li>
                 <strong>{participant.teamName}:</strong>
-                {resultsByQuestionByTeam[questionIndex][participant.teamName]?.received || '-'}
-                {resultsByQuestionByTeam[questionIndex][participant.teamName]?.isCorrect
-                  ? '✅'
-                  : '❌'}
+                {resultsByQuestionByTeam[questionIndex][participant.id]?.received || '-'}
+                {resultsByQuestionByTeam[questionIndex][participant.id]?.isCorrect ? '✅' : '❌'}
               </li>
             {/each}
           </ul>

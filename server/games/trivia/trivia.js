@@ -56,21 +56,21 @@ module.exports = function TriviaGame(io, gameCode) {
       io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
-    socket.on(TriviaEvents.SubmitAnswer, (teamName, questionNumber, answer) => {
-      if (!answers[teamName]) answers[teamName] = []
+    socket.on(TriviaEvents.SubmitAnswer, ({ userId, questionNumber, answer }) => {
+      if (!answers[userId]) answers[userId] = []
 
-      const teamAnswers = answers[teamName]
+      const teamAnswers = answers[userId]
       teamAnswers[questionNumber - 1] = answer
     })
 
     socket.on(TriviaEvents.GetGameResult, () => {
       const resultsByQuestionByTeam = questions.map(({ answer }, questionIndex) => {
-        return users.reduce((accum, teamName) => {
-          const teamAnswerToThisQuestion = answers[teamName]?.[questionIndex]
+        return users.reduce((accum, user) => {
+          const teamAnswerToThisQuestion = answers[user.id]?.[questionIndex]
           const expected = answer
           const received = teamAnswerToThisQuestion
           const isCorrect = expected == received
-          accum[teamName] = { expected, received, isCorrect }
+          accum[user.id] = { expected, received, isCorrect }
           return accum
         }, {})
       })
