@@ -1,14 +1,14 @@
 <script lang="ts">
   import { TriviaEvents } from 'triviality-shared'
-  import { teamName, userId } from '~/lib/stores'
+  import { teamName } from '~/lib/stores'
   import { goto } from '$app/navigation'
-  import { connect, determineHost } from '~/helpers'
+  import { connectToTriviaGame, determineHost } from '~/helpers'
   import { page } from '$app/stores'
   import type { User } from '~/types'
 
   const gameCode = $page.params.gameCode
 
-  const { socket } = connect()
+  const socket = connectToTriviaGame()
   let participants: User[] = []
   $: isHost = determineHost(participants)
 

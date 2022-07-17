@@ -53,8 +53,10 @@
             {#each participants as participant}
               <li>
                 <strong>{participant.teamName}:</strong>
-                {resultsByQuestionByTeam[questionIndex][participant.id]?.received || '-'}
-                {resultsByQuestionByTeam[questionIndex][participant.id]?.isCorrect ? '✅' : '❌'}
+                {(() => {
+                  const thisResult = resultsByQuestionByTeam[questionIndex][participant.id]
+                  return thisResult?.received ? (thisResult?.isCorrect ? '✅' : '❌') : '-'
+                })()}
               </li>
             {/each}
           </ul>
