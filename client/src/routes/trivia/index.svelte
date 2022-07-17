@@ -26,5 +26,5 @@
   <title>Welcome to Triviality!</title>
 </svelte:head>
 
-<Button class="mt-4 w-full" href="/trivia/join">Join game</Button>
-<Button class="mt-4 w-full" on:click={handleStartNewGame}>Start a new game</Button>
+<Button class="mt-4" href="/trivia/join">Join game</Button>
+<Button class="mt-4" on:click={handleStartNewGame}>Start a new game</Button>

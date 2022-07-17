@@ -1,3 +1,7 @@
+<!-- 
+  This is the waiting room page where users 
+  will sit until the host starts the game 
+-->
 <script lang="ts">
   import { TriviaEvents } from 'triviality-shared'
   import { teamName } from '~/lib/stores'
@@ -28,7 +32,8 @@
   }
 </script>
 
-<h1 class="font-bold text-xl">Team: {$teamName}</h1>
+<h1 class="font-bold text-xl">Game Code: {gameCode}</h1>
+<h2 class="font-bold text-lg">Team: {$teamName}</h2>
 <p class="my-4">Waiting for everyone to join...</p>
 
 {#if participants.length}
