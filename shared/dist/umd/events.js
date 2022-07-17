@@ -17,3 +17,9 @@ export var BuzzEvents;
     BuzzEvents["StartGame"] = "buzz--start game";
     BuzzEvents["ResetGame"] = "buzz--reset game";
 })(BuzzEvents || (BuzzEvents = {}));
+export var GenericEvents;
+(function (GenericEvents) {
+    GenericEvents["JoinRoom"] = "join room";
+    GenericEvents["JoinedRoom"] = "joined room";
+    GenericEvents["HostRoom"] = "host room";
+})(GenericEvents || (GenericEvents = {}));

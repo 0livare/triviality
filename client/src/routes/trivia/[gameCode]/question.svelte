@@ -3,35 +3,38 @@
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import Button from '$lib/button.svelte'
-  import { teamName } from '$lib/stores'
-  import { connect } from '~/helpers'
-  import type { Question } from '~/types'
+  import { userId } from '$lib/stores'
+  import { connectToTriviaGame, determineHost } from '~/helpers'
+  import type { Question, User } from '~/types'
 
-  const questionNumber = Number($page.params.questionNumber)
+  let questionNumber = -1
+  const gameCode = $page.params.gameCode
 
-  const socket = connect()
+  const socket = connectToTriviaGame()
   let questions: null | Question[] = null
   let question: Question | undefined
   $: question = questions?.[questionNumber - 1]
 
   let answer: string
-  let teams: string[] = []
-  $: isHost = teams.indexOf($teamName || '') === 0
+  let participants: User[] = []
+  $: isHost = determineHost(participants)
 
   socket.emit(TriviaEvents.GetUsers)
-  socket.on(TriviaEvents.GetUsers, (users: string[]) => {
-    teams = users
+  socket.on(TriviaEvents.GetUsers, (users: User[]) => {
+    participants = users
   })
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
-    if (answer) {
-      socket.emit(TriviaEvents.SubmitAnswer, $teamName, questionNumber, answer)
+    if (answer && q !== questionNumber) {
+      socket.emit(TriviaEvents.SubmitAnswer, { userId: $userId, questionNumber, answer })
     }
 
     if (q == null) {
-      goto('/trivia/scoreboard')
-    } else if (q !== questionNumber) {
-      window.location.href = `/trivia/question/${q}`
+      goto(`/trivia/${gameCode}/scoreboard`)
+    } else {
+      // window.location.href = `/trivia/${gameCode}/question/${q}`
+      questionNumber = q
+      answer = ''
     }
   })
 

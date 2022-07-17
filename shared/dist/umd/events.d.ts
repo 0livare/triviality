@@ -15,3 +15,8 @@ export declare enum BuzzEvents {
     StartGame = "buzz--start game",
     ResetGame = "buzz--reset game"
 }
+export declare enum GenericEvents {
+    JoinRoom = "join room",
+    JoinedRoom = "joined room",
+    HostRoom = "host room"
+}

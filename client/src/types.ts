@@ -12,3 +12,8 @@ export type QuestionResult = {
 
 /** Where the key is the team name */
 export type GameResult = Record<string, QuestionResult>[]
+
+export type User = {
+  id: string
+  teamName: string
+}
