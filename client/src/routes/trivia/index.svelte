@@ -5,6 +5,7 @@
 
   import Button from '~/lib/button.svelte'
   import { connect } from '~/helpers'
+  import Logo from '$lib/logo.svelte'
 
   const { socket } = connect()
 
@@ -28,26 +29,9 @@
   <title>Triviality</title>
 </svelte:head>
 
-<div class="flex flex-col relative items-center">
-  <div
-    class="
-      logoWrapper 
-      flex justify-center items-center overflow-hidden rounded-full 
-      bg-purp-400
-      w-56 h-56
-      mb-24
-    "
-  >
-    <img src="/logo.png" alt="Triviality" class="logo object-contain object-center" />
-  </div>
+<div class="flex flex-col relative items-center -translate-y-8">
+  <Logo size="large" class="mb-24" />
 
   <Button class="mt-4" href="/trivia/join">Join game</Button>
   <Button class="mt-4" on:click={handleStartNewGame}>Start a new game</Button>
 </div>
-
-<style>
-  .logo {
-    width: 60%;
-    height: 60%;
-  }
-</style>

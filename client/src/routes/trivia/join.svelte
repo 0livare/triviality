@@ -4,6 +4,8 @@
   import { teamName, userId } from '~/lib/stores'
   import { connectToTriviaGame } from '~/helpers'
   import Button from '$lib/button.svelte'
+  import TextField from '$lib/text-field.svelte'
+  import Logo from '$lib/logo.svelte'
 
   const socket = connectToTriviaGame()
   let questionNumber: number | null = null
@@ -15,7 +17,11 @@
 
   function handleSubmit() {
     if (!gameCode) return
-    socket.emit(GenericEvents.JoinRoom, { teamName: $teamName, gameCode, userId: $userId })
+    socket.emit(GenericEvents.JoinRoom, {
+      teamName: $teamName,
+      gameCode,
+      userId: $userId,
+    })
 
     if (questionNumber) {
       goto(`/trivia/${gameCode}/question}`)
@@ -29,29 +35,23 @@
   <title>Join a game</title>
 </svelte:head>
 
-<form on:submit|preventDefault={handleSubmit}>
-  <label class="flex flex-col">
-    Game Code
-    <input
-      type="text"
-      name="teamName"
-      bind:value={gameCode}
-      class="border border-gray-200 text-black"
-      required
-      autocomplete="off"
-    />
-  </label>
+<form on:submit|preventDefault={handleSubmit} class="-translate-y-8">
+  <Logo size="small" class="mx-auto mb-8" />
 
-  <label class="flex flex-col">
-    Your team name
-    <input
-      type="text"
-      name="teamName"
-      bind:value={$teamName}
-      class="border border-gray-200 text-black"
-      required
-    />
-  </label>
+  <TextField
+    label="Game Code"
+    name="gameCode"
+    bind:value={gameCode}
+    required
+    autocomplete="off"
+  />
 
-  <Button type="submit" class="mt-4 w-full">Continue</Button>
+  <TextField
+    label="Your team name"
+    name="teamName"
+    bind:value={$teamName}
+    required
+  />
+
+  <Button type="submit" class="mt-6 w-full">Continue</Button>
 </form>

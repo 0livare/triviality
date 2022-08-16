@@ -55,5 +55,5 @@ io.on('connection', (socket) => {
 })
 
 server.listen(PORT, () => {
-  console.info(`Listening on http://localhost:${PORT}`)
+  console.info(`Local server is listening on http://localhost:${PORT}`)
 })
