@@ -8,7 +8,7 @@
 <div
   class="
     flex justify-center items-center overflow-hidden rounded-full 
-    bg-purp-400
+    bg-purp-400/60
     {size === 'large' && 'w-56 h-56'}
     {size === 'small' && 'w-24 h-24'}
     {className}
@@ -17,7 +17,7 @@
   <img
     src="/logo.png"
     alt="Triviality"
-    class="logo object-contain object-center"
+    class="logo object-contain object-center opacity-60"
   />
 </div>
 

@@ -9,6 +9,8 @@
 
   const socket = connectToTriviaGame()
   let questionNumber: number | null = null
+
+  // TODO: Set game code to the "gameCode" query param if it is set
   let gameCode: string | null = null
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
