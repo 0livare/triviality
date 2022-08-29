@@ -15,6 +15,7 @@
   let question: Question | undefined
   $: question = questions?.[questionNumber - 1]
 
+  let isSubmitted = false
   let answer: string
   let participants: User[] = []
   $: isHost = determineHost(participants)
@@ -26,7 +27,13 @@
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
     if (answer && q !== questionNumber) {
-      socket.emit(TriviaEvents.SubmitAnswer, { userId: $userId, questionNumber, answer })
+      socket.emit(TriviaEvents.SubmitAnswer, {
+        userId: $userId,
+        questionNumber,
+        answer,
+      })
+
+      isSubmitted = false
     }
 
     if (q == null) {
@@ -52,15 +59,30 @@
   socket.on(TriviaEvents.ResetGame, () => {
     goto('/trivia')
   })
+
+  function handleSubmit() {
+    isSubmitted = true
+    socket.emit(TriviaEvents.SubmitAnswer, {
+      userId: $userId,
+      questionNumber,
+      answer,
+    })
+  }
 </script>
 
-<div class="p-4">
+<div class="p-4 text-white text-lg">
   {#if question}
     <p class="mb-4">{question.prompt}</p>
     <div role="radiogroup" class="flex flex-col">
       {#each question.choices as choice}
         <label>
-          <input type="radio" bind:group={answer} name="answer" value={choice} />
+          <input
+            type="radio"
+            bind:group={answer}
+            name="answer"
+            value={choice}
+            disabled={isSubmitted}
+          />
           {choice}
         </label>
       {/each}
@@ -69,7 +91,11 @@
     <p>Loading...</p>
   {/if}
 
+  <Button on:click={handleSubmit} class="mt-8" disabled={isSubmitted}>
+    Submit
+  </Button>
+
   {#if answer && isHost}
-    <Button on:click={handleNext}>Go to next question</Button>
+    <Button on:click={handleNext} class="mt-8">Go to next question</Button>
   {/if}
 </div>

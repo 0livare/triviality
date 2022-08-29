@@ -42,7 +42,7 @@
   }
 </script>
 
-<div class="p-4">
+<div class="p-4 text-white">
   {#if resultsByQuestionByTeam && questions && participants}
     <h1 class="font-bold text-3xl mb-4">Results</h1>
     <ul>
@@ -54,8 +54,13 @@
               <li>
                 <strong>{participant.teamName}:</strong>
                 {(() => {
-                  const thisResult = resultsByQuestionByTeam[questionIndex][participant.id]
-                  return thisResult?.received ? (thisResult?.isCorrect ? '✅' : '❌') : '-'
+                  const thisResult =
+                    resultsByQuestionByTeam[questionIndex][participant.id]
+                  return thisResult?.received
+                    ? thisResult?.isCorrect
+                      ? '✅'
+                      : '❌'
+                    : '-'
                 })()}
               </li>
             {/each}
