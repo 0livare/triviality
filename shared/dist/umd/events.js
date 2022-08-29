@@ -9,6 +9,8 @@ export var TriviaEvents;
     TriviaEvents["NextQuestion"] = "trivia--next question";
     TriviaEvents["SubmitAnswer"] = "trivia--submit answer";
     TriviaEvents["GetGameResult"] = "trivia--get game result";
+    TriviaEvents["CorrectAnswer"] = "trivia--correct answer";
+    TriviaEvents["GetIsSubmitted"] = "trivia--get is submitted";
 })(TriviaEvents || (TriviaEvents = {}));
 export var BuzzEvents;
 (function (BuzzEvents) {

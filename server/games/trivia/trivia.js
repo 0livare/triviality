@@ -54,6 +54,15 @@ module.exports = function TriviaGame(io, gameCode) {
         questionNumber = null
       }
       io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
+
+      const correctAnswer = questions[questionNumber]?.answer
+      // If the game is over, there might not be a correct answer?
+      if (correctAnswer) {
+        io.in(gameCode).emit(TriviaEvents.CorrectAnswer, {
+          questionNumber,
+          correctAnswer,
+        })
+      }
     })
 
     socket.on(TriviaEvents.SubmitAnswer, ({ userId, questionNumber, answer }) => {
@@ -83,6 +92,15 @@ module.exports = function TriviaGame(io, gameCode) {
       questionNumber = null
       answers = {}
       io.emit(TriviaEvents.ResetGame)
+    })
+
+    socket.on(TriviaEvents.GetIsSubmitted, ({ userId }) => {
+      const answer = answers[userId]?.[questionNumber - 1]
+
+      socket.emit(TriviaEvents.GetIsSubmitted, {
+        isSubmitted: !!answer,
+        answer,
+      })
     })
   }
 

@@ -52,15 +52,29 @@
   })
   socket.emit(TriviaEvents.GetQuestionData)
 
-  function handleNext() {
-    socket.emit(TriviaEvents.NextQuestion)
-  }
-
   socket.on(TriviaEvents.ResetGame, () => {
     goto('/trivia')
   })
 
+  socket.on(TriviaEvents.CorrectAnswer, ({ correctAnswer }) => {
+    console.log('correctAnswer', correctAnswer)
+  })
+
+  socket.on(
+    TriviaEvents.GetIsSubmitted,
+    ({ isSubmitted: submitted, answer: _answer }: any) => {
+      isSubmitted = submitted
+      answer = _answer
+    },
+  )
+  socket.emit(TriviaEvents.GetIsSubmitted, { userId: $userId })
+
+  function handleNext() {
+    socket.emit(TriviaEvents.NextQuestion)
+  }
+
   function handleSubmit() {
+    if (!answer) return
     isSubmitted = true
     socket.emit(TriviaEvents.SubmitAnswer, {
       userId: $userId,
