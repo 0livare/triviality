@@ -4,8 +4,8 @@
   export let value: string | null | undefined
   export let name: string | undefined
   export let label: string
-  export let required: boolean | undefined
-  export let autocomplete: AutoCompleteValues | undefined
+  export let required: boolean | undefined = false
+  export let autocomplete: AutoCompleteValues | undefined = undefined
 
   let className = ''
   export { className as class }

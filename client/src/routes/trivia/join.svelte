@@ -6,12 +6,12 @@
   import Button from '$lib/button.svelte'
   import TextField from '$lib/text-field.svelte'
   import Logo from '$lib/logo.svelte'
+  import { page } from '$app/stores'
 
   const socket = connectToTriviaGame()
   let questionNumber: number | null = null
 
-  // TODO: Set game code to the "gameCode" query param if it is set
-  let gameCode: string | null = null
+  let gameCode: string | null = $page.url.searchParams.get('gameCode') || null
 
   socket.on(TriviaEvents.GetCurrentQuestionNumber, (q) => {
     questionNumber = q
