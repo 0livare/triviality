@@ -6,6 +6,7 @@
   import { userId } from '$lib/stores'
   import { connectToTriviaGame, determineHost } from '~/helpers'
   import type { Question, User } from '~/types'
+  import CorrectAnswerPopup from '$lib/correct-answer-popup.svelte'
 
   let questionNumber = -1
   const gameCode = $page.params.gameCode
@@ -16,6 +17,7 @@
   $: question = questions?.[questionNumber - 1]
 
   let isSubmitted = false
+  let previousAnswer: { forNumber: number; answer: string }
   let answer: string
   let participants: User[] = []
   $: isHost = determineHost(participants)
@@ -36,8 +38,16 @@
       isSubmitted = false
     }
 
+    previousAnswer = {
+      forNumber: questionNumber,
+      answer,
+    }
+    console.log('previousAnswer', previousAnswer)
+
     if (q == null) {
-      goto(`/trivia/${gameCode}/scoreboard`)
+      setTimeout(() => {
+        goto(`/trivia/${gameCode}/scoreboard`)
+      }, 3000)
     } else {
       // window.location.href = `/trivia/${gameCode}/question/${q}`
       questionNumber = q
@@ -54,10 +64,6 @@
 
   socket.on(TriviaEvents.ResetGame, () => {
     goto('/trivia')
-  })
-
-  socket.on(TriviaEvents.CorrectAnswer, ({ correctAnswer }) => {
-    console.log('correctAnswer', correctAnswer)
   })
 
   socket.on(
@@ -113,3 +119,8 @@
     <Button on:click={handleNext} class="mt-8">Go to next question</Button>
   {/if}
 </div>
+
+<CorrectAnswerPopup
+  correctAnswer={questions?.[previousAnswer?.forNumber - 1]?.answer}
+  theirAnswer={previousAnswer?.answer}
+/>

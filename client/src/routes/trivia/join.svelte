@@ -7,6 +7,7 @@
   import TextField from '$lib/text-field.svelte'
   import Logo from '$lib/logo.svelte'
   import { page } from '$app/stores'
+  import Modal from '$lib/modal.svelte'
 
   const socket = connectToTriviaGame()
   let questionNumber: number | null = null

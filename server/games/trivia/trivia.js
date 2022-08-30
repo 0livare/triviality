@@ -47,15 +47,9 @@ module.exports = function TriviaGame(io, gameCode) {
 
     socket.on(TriviaEvents.NextQuestion, () => {
       console.log('next question')
-      const areQuestionsRemaining = questions.length > questionNumber
-      if (areQuestionsRemaining) {
-        questionNumber++
-      } else {
-        questionNumber = null
-      }
-      io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
 
-      const correctAnswer = questions[questionNumber]?.answer
+      const questionIndex = questionNumber - 1
+      const correctAnswer = questions[questionIndex]?.answer
       // If the game is over, there might not be a correct answer?
       if (correctAnswer) {
         io.in(gameCode).emit(TriviaEvents.CorrectAnswer, {
@@ -63,6 +57,14 @@ module.exports = function TriviaGame(io, gameCode) {
           correctAnswer,
         })
       }
+
+      const areQuestionsRemaining = questions.length > questionNumber
+      if (areQuestionsRemaining) {
+        questionNumber++
+      } else {
+        questionNumber = null
+      }
+      io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
     socket.on(TriviaEvents.SubmitAnswer, ({ userId, questionNumber, answer }) => {
