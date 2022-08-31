@@ -7,6 +7,8 @@
   export let correctAnswer: string | null | undefined
   export let theirAnswer: string | null | undefined
 
+  $: isCorrect = correctAnswer === theirAnswer
+
   let isOpen = true
 
   $: {
@@ -24,12 +26,10 @@
 
 {#if correctAnswer && theirAnswer}
   <Modal {isOpen} on:close={handleClose}>
-    Correct answer was: "{correctAnswer}"
-    <br />
-    <br />
-    Your answer was: "{theirAnswer}"
-    <br />
-    <br />
-    You got it: {correctAnswer === theirAnswer ? 'Right' : 'Wrong'}
+    {#if isCorrect}
+      Way to go! "{correctAnswer}" was the correct answer.
+    {:else}
+      Nope! It was "{correctAnswer}".
+    {/if}
   </Modal>
 {/if}

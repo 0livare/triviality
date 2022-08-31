@@ -22,14 +22,15 @@
   on:close={close}
   class="fixed inset-0 z-10 overflow-y-auto"
 >
-  <div class="min-h-screen px-4 text-center">
+  <div
+    class="min-h-screen px-4 text-center flex flex-col justify-center items-center"
+  >
     <DialogOverlay
       class="fixed top-0 left-0 w-screen h-screen bg-black opacity-70"
       on:click={close}
     />
-    <span class="inline-block h-screen align-middle" aria-hidden="true">​</span>
     <div
-      class="inline-block w-full max-w-md p-6 my-8 align-middle overflow-hidden text-left relative transition-all transform bg-white shadow-xl rounded-2xl"
+      class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left relative transition-all transform bg-white shadow-xl rounded-2xl"
     >
       <button
         class="w-6 h-6 rounded-full hover:bg-gray-100 absolute top-4 right-4 flex items-center justify-center text-center outline-none text-sm"

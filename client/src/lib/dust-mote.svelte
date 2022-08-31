@@ -35,16 +35,24 @@
   function iterate(posMax = 100) {
     iterations++
 
-    let xDelta = chooseDelta({ scale: 1.1, start: posPctStart, max: maxPosMoveVw })
+    let xDelta = chooseDelta({
+      scale: 1.1,
+      start: posPctStart,
+      max: maxPosMoveVw,
+    })
     x = bound(x + xDelta, { max: posMax })
 
-    let yDelta = chooseDelta({ scale: 1.1, start: posPctStart, max: maxPosMoveVw })
+    let yDelta = chooseDelta({
+      scale: 1.1,
+      start: posPctStart,
+      max: maxPosMoveVw,
+    })
     y = bound(y + yDelta, { max: posMax })
 
     let diameterDelta = chooseDelta({ scale: 40 })
     diameter = bound(diameter + diameterDelta, { max: 100 })
 
-    // console.log(`Moving ${index}`, { iterations, x, y, radius, xDelta, yDelta, posPctStart })
+    // console.info(`Moving ${index}`, { iterations, x, y, radius, xDelta, yDelta, posPctStart })
   }
 
   onMount(() => {

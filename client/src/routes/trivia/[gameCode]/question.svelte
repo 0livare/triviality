@@ -42,7 +42,6 @@
       forNumber: questionNumber,
       answer,
     }
-    console.log('previousAnswer', previousAnswer)
 
     if (q == null) {
       setTimeout(() => {

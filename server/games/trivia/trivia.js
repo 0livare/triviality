@@ -92,10 +92,12 @@ module.exports = function TriviaGame(io, gameCode) {
       answers = {}
       io.emit(TriviaEvents.ResetGame)
 
-      console.log('kicking everyone out!!!')
       // Kick everyone out of the room
       io.socketsLeave(gameCode)
 
+      // Just because their out of the room doesn't mean that the
+      // events that were registered without regard to the room
+      // aren't still attached.
       // This could be done at the top of the
       // registerEvents() function
       Object.values(TriviaEvents).forEach((triviaEvent) => {

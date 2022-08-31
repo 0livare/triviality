@@ -16,7 +16,7 @@
   })
 
   function handleStartNewGame() {
-    console.log('userId', $userId)
+    console.info('userId', $userId)
     socket.emit(GenericEvents.HostRoom, {
       gameType: GameTypes.Trivia,
       userId: $userId,
