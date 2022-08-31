@@ -31,12 +31,10 @@ module.exports = function TriviaGame(io, gameCode) {
     })
 
     socket.on(TriviaEvents.GetCurrentQuestionNumber, () => {
-      console.log('get question number')
       socket.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
     socket.on(TriviaEvents.GetQuestionData, () => {
-      console.log('get questions')
       socket.emit(TriviaEvents.GetQuestionData, questions)
     })
 
@@ -46,8 +44,6 @@ module.exports = function TriviaGame(io, gameCode) {
     })
 
     socket.on(TriviaEvents.NextQuestion, () => {
-      console.log('next question')
-
       const questionIndex = questionNumber - 1
       const correctAnswer = questions[questionIndex]?.answer
       // If the game is over, there might not be a correct answer?
@@ -64,6 +60,7 @@ module.exports = function TriviaGame(io, gameCode) {
       } else {
         questionNumber = null
       }
+
       io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
@@ -94,6 +91,16 @@ module.exports = function TriviaGame(io, gameCode) {
       questionNumber = null
       answers = {}
       io.emit(TriviaEvents.ResetGame)
+
+      console.log('kicking everyone out!!!')
+      // Kick everyone out of the room
+      io.socketsLeave(gameCode)
+
+      // This could be done at the top of the
+      // registerEvents() function
+      Object.values(TriviaEvents).forEach((triviaEvent) => {
+        socket.removeAllListeners(triviaEvent)
+      })
     })
 
     socket.on(TriviaEvents.GetIsSubmitted, ({ userId }) => {

@@ -10,7 +10,6 @@
   const { socket } = connect()
 
   socket.on(GenericEvents.HostRoom, (gameCode) => {
-    console.log('received event back')
     if (gameCode) {
       goto(`/trivia/${gameCode}/start`)
     }
