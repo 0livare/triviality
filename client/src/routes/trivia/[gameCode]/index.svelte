@@ -69,14 +69,14 @@
   {/if}
 
   <!-- {#if isHost && participants.length > 1} -->
-  {#if isHost}
+  <!-- {#if isHost}
     <Button
       on:click={handleStartGame}
       class="mt-16 rounded-full w-32 h-32 min-w-0"
     >
       Begin!
     </Button>
-  {:else}{/if}
+  {/if} -->
 </div>
 
 <style>

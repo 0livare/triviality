@@ -114,9 +114,9 @@
     Submit
   </Button>
 
-  {#if answer && isHost}
+  <!-- {#if answer && isHost}
     <Button on:click={handleNext} class="mt-8">Go to next question</Button>
-  {/if}
+  {/if} -->
 </div>
 
 <CorrectAnswerPopup
