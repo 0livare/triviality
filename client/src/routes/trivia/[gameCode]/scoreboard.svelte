@@ -5,10 +5,10 @@
   import { teamName } from '$lib/stores'
 
   import { connect, determineHost } from '~/helpers'
-  import type { GameResult, Question, User } from '~/types'
+  import type { Question, User } from '~/types'
 
   const { socket } = connect()
-  let resultsByQuestionByTeam: GameResult
+  let pointsByTeam: Record<string, number>
   let questions: Question[] | undefined
 
   let participants: User[] | undefined
@@ -20,7 +20,7 @@
   })
 
   socket.on(TriviaEvents.GetGameResult, (_results) => {
-    resultsByQuestionByTeam = _results
+    pointsByTeam = _results
   })
   socket.emit(TriviaEvents.GetGameResult)
 
@@ -43,28 +43,13 @@
 </script>
 
 <div class="p-4 text-white">
-  {#if resultsByQuestionByTeam && questions && participants}
+  {#if pointsByTeam && questions && participants}
     <h1 class="font-bold text-3xl mb-4">Results</h1>
-    <ul>
-      {#each questions as question, questionIndex}
-        <li class="my-10">
-          <strong>{question.prompt}</strong>
-          <ul class="list-disc ml-8 py-2">
-            {#each participants as participant}
-              <li>
-                <strong>{participant.teamName}:</strong>
-                {(() => {
-                  const thisResult =
-                    resultsByQuestionByTeam[questionIndex][participant.id]
-                  return thisResult?.received
-                    ? thisResult?.isCorrect
-                      ? '✅'
-                      : '❌'
-                    : '-'
-                })()}
-              </li>
-            {/each}
-          </ul>
+    <ul class="list-disc ml-8 py-2">
+      {#each participants as participant}
+        <li>
+          <strong>{participant.teamName}:</strong>
+          {pointsByTeam[participant.id]}
         </li>
       {/each}
     </ul>
