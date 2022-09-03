@@ -83,6 +83,6 @@
     <Button on:click={handleNext}>Go to next question</Button>
   {/if}
 
-  <Button on:click={handleReset} class="mt-8">Reset game</Button>
+  <Button on:click={handleReset} class="mt-32">Reset game</Button>
   <Button href={`/trivia/${gameCode}/scoreboard`}>Go to scoreboard</Button>
 </div>
