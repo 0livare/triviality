@@ -10,6 +10,7 @@ export enum TriviaEvents {
   GetGameResult = 'trivia--get game result',
   CorrectAnswer = 'trivia--correct answer',
   GetIsSubmitted = 'trivia--get is submitted',
+  SubmitCount = 'trivia--submit count',
 }
 
 export enum BuzzEvents {

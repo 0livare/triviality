@@ -41,6 +41,7 @@ module.exports = function TriviaGame(io, gameCode) {
     socket.on(TriviaEvents.StartGame, () => {
       questionNumber = 1
       io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
+      io.in(gameCode).emit(TriviaEvents.SubmitCount, 0)
     })
 
     socket.on(TriviaEvents.NextQuestion, () => {
@@ -61,6 +62,7 @@ module.exports = function TriviaGame(io, gameCode) {
         questionNumber = null
       }
 
+      io.in(gameCode).emit(TriviaEvents.SubmitCount, 0)
       io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
@@ -69,6 +71,15 @@ module.exports = function TriviaGame(io, gameCode) {
 
       const teamAnswers = answers[userId]
       teamAnswers[questionNumber - 1] = answer
+
+      const submitCount = Object.values(answers)
+        .map((teamAnswers) => {
+          const answerForThisQ = teamAnswers[questionNumber - 1]
+          return answerForThisQ ? 1 : 0
+        })
+        .reduce((sum, count) => sum + count, 0)
+
+      io.in(gameCode).emit(TriviaEvents.SubmitCount, submitCount)
     })
 
     socket.on(TriviaEvents.GetGameResult, () => {
@@ -94,12 +105,6 @@ module.exports = function TriviaGame(io, gameCode) {
           if (!questionResultForTeam) return
           if (questionResultForTeam.isCorrect) pointsByTeam[user.id] += pointsPerQuestion
         })
-      })
-
-      console.log({
-        resultsByQuestionByTeam: JSON.stringify(resultsByQuestionByTeam),
-        pointsByTeam: JSON.stringify(pointsByTeam),
-        resultsByQuestionByTeam: JSON.stringify(resultsByQuestionByTeam),
       })
 
       socket.emit(TriviaEvents.GetGameResult, pointsByTeam)

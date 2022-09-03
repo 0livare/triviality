@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
   console.info('CONNECTED', socket.id)
 
   socket.on(GenericEvents.HostRoom, ({ gameType, userId }) => {
-    let gameCode = generateGameCode(Object.keys(games))
+    let gameCode = '1234' // generateGameCode(Object.keys(games))
     let game
 
     switch (gameType) {
