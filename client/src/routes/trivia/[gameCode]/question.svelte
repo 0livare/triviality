@@ -7,6 +7,7 @@
   import { connectToTriviaGame } from '~/helpers'
   import type { Question, User } from '~/types'
   import CorrectAnswerPopup from '$lib/correct-answer-popup.svelte'
+  import cs from 'classnames'
 
   let questionNumber = -1
   const gameCode = $page.params.gameCode
@@ -88,18 +89,27 @@
   }
 </script>
 
-<div class="p-4 text-white text-lg">
+<div class="p-4 text-center text-white">
   {#if question}
-    <p class="mb-4">{question.prompt}</p>
+    <p class="text-sm text-center mb-4">
+      Question {questionNumber}
+    </p>
+    <p class=" text-4xl font-bold mb-12">{question.prompt}</p>
     <div role="radiogroup" class="flex flex-col">
       {#each question.choices as choice}
-        <label>
+        <label
+          class={cs(
+            'w-64 text-left mx-auto p-4 my-2 border border-white/50  cursor-pointer ',
+            answer === choice ? 'bg-white/30' : 'hover:bg-white/10',
+          )}
+        >
           <input
             type="radio"
             bind:group={answer}
             name="answer"
             value={choice}
             disabled={isSubmitted}
+            class="mr-8 peer"
           />
           {choice}
         </label>
@@ -122,3 +132,6 @@
   correctAnswer={questions?.[previousAnswer?.forNumber - 1]?.answer}
   theirAnswer={previousAnswer?.answer}
 />
+
+<style>
+</style>
