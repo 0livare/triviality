@@ -85,14 +85,21 @@ module.exports = function TriviaGame(io, gameCode) {
 
       const pointsPerQuestion = 10
       const pointsByTeam = users.reduce((accum, user) => {
-        accum[user] = 0
+        accum[user.id] = 0
         return accum
       }, {})
       resultsByQuestionByTeam.forEach((questionResultsByTeam) => {
-        users.forEach((team) => {
-          const questionResultForTeam = questionResultsByTeam[team]
-          if (questionResultForTeam.isCorrect) pointsByTeam[team] += pointsPerQuestion
+        users.forEach((user) => {
+          const questionResultForTeam = questionResultsByTeam[user.id]
+          if (!questionResultForTeam) return
+          if (questionResultForTeam.isCorrect) pointsByTeam[user.id] += pointsPerQuestion
         })
+      })
+
+      console.log({
+        resultsByQuestionByTeam: JSON.stringify(resultsByQuestionByTeam),
+        pointsByTeam: JSON.stringify(pointsByTeam),
+        resultsByQuestionByTeam: JSON.stringify(resultsByQuestionByTeam),
       })
 
       socket.emit(TriviaEvents.GetGameResult, pointsByTeam)
