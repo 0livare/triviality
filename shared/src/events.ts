@@ -8,6 +8,9 @@ export enum TriviaEvents {
   NextQuestion = 'trivia--next question',
   SubmitAnswer = 'trivia--submit answer',
   GetGameResult = 'trivia--get game result',
+  CorrectAnswer = 'trivia--correct answer',
+  GetIsSubmitted = 'trivia--get is submitted',
+  SubmitCount = 'trivia--submit count',
 }
 
 export enum BuzzEvents {

@@ -5,6 +5,7 @@
 
   import Button from '~/lib/button.svelte'
   import { connect } from '~/helpers'
+  import Logo from '$lib/logo.svelte'
 
   const { socket } = connect()
 
@@ -15,6 +16,7 @@
   })
 
   function handleStartNewGame() {
+    console.info('userId', $userId)
     socket.emit(GenericEvents.HostRoom, {
       gameType: GameTypes.Trivia,
       userId: $userId,
@@ -23,8 +25,12 @@
 </script>
 
 <svelte:head>
-  <title>Welcome to Triviality!</title>
+  <title>Triviality</title>
 </svelte:head>
 
-<Button class="mt-4" href="/trivia/join">Join game</Button>
-<Button class="mt-4" on:click={handleStartNewGame}>Start a new game</Button>
+<div class="flex flex-col relative items-center -translate-y-8">
+  <Logo size="large" class="mb-24" />
+
+  <Button class="mt-4" href="/trivia/join">Join game</Button>
+  <Button class="mt-4" on:click={handleStartNewGame}>Start a new game</Button>
+</div>

@@ -12,6 +12,9 @@ var TriviaEvents;
     TriviaEvents["NextQuestion"] = "trivia--next question";
     TriviaEvents["SubmitAnswer"] = "trivia--submit answer";
     TriviaEvents["GetGameResult"] = "trivia--get game result";
+    TriviaEvents["CorrectAnswer"] = "trivia--correct answer";
+    TriviaEvents["GetIsSubmitted"] = "trivia--get is submitted";
+    TriviaEvents["SubmitCount"] = "trivia--submit count";
 })(TriviaEvents = exports.TriviaEvents || (exports.TriviaEvents = {}));
 var BuzzEvents;
 (function (BuzzEvents) {

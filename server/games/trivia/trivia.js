@@ -31,28 +31,38 @@ module.exports = function TriviaGame(io, gameCode) {
     })
 
     socket.on(TriviaEvents.GetCurrentQuestionNumber, () => {
-      console.log('get question number')
       socket.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
     socket.on(TriviaEvents.GetQuestionData, () => {
-      console.log('get questions')
       socket.emit(TriviaEvents.GetQuestionData, questions)
     })
 
     socket.on(TriviaEvents.StartGame, () => {
       questionNumber = 1
-      io.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
+      io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
+      io.in(gameCode).emit(TriviaEvents.SubmitCount, 0)
     })
 
     socket.on(TriviaEvents.NextQuestion, () => {
-      console.log('next question')
+      const questionIndex = questionNumber - 1
+      const correctAnswer = questions[questionIndex]?.answer
+      // If the game is over, there might not be a correct answer?
+      if (correctAnswer) {
+        io.in(gameCode).emit(TriviaEvents.CorrectAnswer, {
+          questionNumber,
+          correctAnswer,
+        })
+      }
+
       const areQuestionsRemaining = questions.length > questionNumber
       if (areQuestionsRemaining) {
         questionNumber++
       } else {
         questionNumber = null
       }
+
+      io.in(gameCode).emit(TriviaEvents.SubmitCount, 0)
       io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
@@ -61,6 +71,15 @@ module.exports = function TriviaGame(io, gameCode) {
 
       const teamAnswers = answers[userId]
       teamAnswers[questionNumber - 1] = answer
+
+      const submitCount = Object.values(answers)
+        .map((teamAnswers) => {
+          const answerForThisQ = teamAnswers[questionNumber - 1]
+          return answerForThisQ ? 1 : 0
+        })
+        .reduce((sum, count) => sum + count, 0)
+
+      io.in(gameCode).emit(TriviaEvents.SubmitCount, submitCount)
     })
 
     socket.on(TriviaEvents.GetGameResult, () => {
@@ -75,7 +94,20 @@ module.exports = function TriviaGame(io, gameCode) {
         }, {})
       })
 
-      socket.emit(TriviaEvents.GetGameResult, resultsByQuestionByTeam)
+      const pointsPerQuestion = 10
+      const pointsByTeam = users.reduce((accum, user) => {
+        accum[user.id] = 0
+        return accum
+      }, {})
+      resultsByQuestionByTeam.forEach((questionResultsByTeam) => {
+        users.forEach((user) => {
+          const questionResultForTeam = questionResultsByTeam[user.id]
+          if (!questionResultForTeam) return
+          if (questionResultForTeam.isCorrect) pointsByTeam[user.id] += pointsPerQuestion
+        })
+      })
+
+      socket.emit(TriviaEvents.GetGameResult, pointsByTeam)
     })
 
     socket.on(TriviaEvents.ResetGame, () => {
@@ -83,6 +115,27 @@ module.exports = function TriviaGame(io, gameCode) {
       questionNumber = null
       answers = {}
       io.emit(TriviaEvents.ResetGame)
+
+      // Kick everyone out of the room
+      io.socketsLeave(gameCode)
+
+      // Just because their out of the room doesn't mean that the
+      // events that were registered without regard to the room
+      // aren't still attached.
+      // This could be done at the top of the
+      // registerEvents() function
+      Object.values(TriviaEvents).forEach((triviaEvent) => {
+        socket.removeAllListeners(triviaEvent)
+      })
+    })
+
+    socket.on(TriviaEvents.GetIsSubmitted, ({ userId }) => {
+      const answer = answers[userId]?.[questionNumber - 1]
+
+      socket.emit(TriviaEvents.GetIsSubmitted, {
+        isSubmitted: !!answer,
+        answer,
+      })
     })
   }
 

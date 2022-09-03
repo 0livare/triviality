@@ -1,7 +1,7 @@
 export type Question = {
   prompt: string
   choices: string[]
-  answer: number
+  answer: string
 }
 
 export type QuestionResult = {

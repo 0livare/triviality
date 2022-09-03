@@ -9,12 +9,23 @@
   import { connectToTriviaGame, determineHost } from '~/helpers'
   import { page } from '$app/stores'
   import type { User } from '~/types'
+  import Button from '$lib/button.svelte'
+  import { onMount } from 'svelte'
 
   const gameCode = $page.params.gameCode
+
+  // Not having teamName set indicates that the user came
+  // directly to this page without first going through the
+  // join page to create a team name.
+  onMount(() => {
+    if ($teamName) return
+    goto(`/trivia/join?gameCode=${gameCode}`)
+  })
 
   const socket = connectToTriviaGame()
   let participants: User[] = []
   $: isHost = determineHost(participants)
+  // $: hostName = participants[0].teamName
 
   socket.emit(TriviaEvents.GetUsers)
   socket.on(TriviaEvents.GetUsers, (users: User[]) => {
@@ -32,24 +43,52 @@
   }
 </script>
 
-<h1 class="font-bold text-xl">Game Code: {gameCode}</h1>
-<h2 class="font-bold text-lg">Team: {$teamName}</h2>
-<p class="my-4">Waiting for everyone to join...</p>
+<div class="-translate-y-8 text-center">
+  <h1 class="text-center">
+    <span class="smallText">Game Code</span>
+    <br />
+    <span class="bigText">{gameCode}</span>
+  </h1>
 
-{#if participants.length}
-  <p>Current participants:</p>
-  <ul class="list-disc">
-    {#each participants as participant}
-      <li>{participant.teamName}</li>
-    {/each}
-  </ul>
-{/if}
+  <h2 class="text-center mt-4 mb-8">
+    <span class="smallText">Team</span>
+    <br />
+    <span class="bigText">{$teamName}</span>
+  </h2>
 
-<!-- {#if isHost && participants.length > 1} -->
-{#if isHost}
-  <button
-    on:click={handleStartGame}
-    class="mt-16 rounded-full w-52 h-52 bg-red-500 text-white font-fold text-5xl hover:animate-spin"
-    >Begin game</button
-  >
-{/if}
+  {#if participants.length}
+    <div class="bg-white/50 p-4 rounded w-full min-w-[250px] text-left">
+      <p>Current participants:</p>
+      <hr class="-mx-4 border-white/40 my-4" />
+      <ul>
+        {#each participants as participant}
+          <li>{participant.teamName}</li>
+        {/each}
+      </ul>
+    </div>
+  {/if}
+
+  <!-- {#if isHost && participants.length > 1} -->
+  <!-- {#if isHost}
+    <Button
+      on:click={handleStartGame}
+      class="mt-16 rounded-full w-32 h-32 min-w-0"
+    >
+      Begin!
+    </Button>
+  {/if} -->
+</div>
+
+<style>
+  .smallText {
+    color: white;
+    opacity: 60%;
+    font-size: 0.875rem;
+  }
+
+  .bigText {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+</style>

@@ -5,6 +5,7 @@
   export { className as class }
 
   export let href = ''
+  export let disabled = false
 </script>
 
 <svelte:element
@@ -12,10 +13,14 @@
   {...$$props}
   on:click
   class={cs(
-    'p-4 border border-purple-500 mt-4 hover:bg-purple-200 hover:dark:bg-purple-900 text-center',
+    'p-4 bg-cyan-400',
+    !disabled && 'hover:bg-cyan-500 active:hover:bg-cyan-600',
+    disabled && 'bg-gray-300 text-gray-600',
+    'text-center rounded-full text-black',
     'min-w-[250px] max-w-full',
     className,
   )}
+  {disabled}
 >
   <slot />
 </svelte:element>

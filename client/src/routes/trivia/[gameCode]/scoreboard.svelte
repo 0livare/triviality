@@ -1,26 +1,30 @@
 <script lang="ts">
   import { TriviaEvents } from 'triviality-shared'
+  import cs from 'classnames'
   import { goto } from '$app/navigation'
-  import Button from '$lib/button.svelte'
-  import { teamName } from '$lib/stores'
+  import { teamName, userId } from '$lib/stores'
 
-  import { connect, determineHost } from '~/helpers'
-  import type { GameResult, Question, User } from '~/types'
+  import { connect } from '~/helpers'
+  import type { Question, User } from '~/types'
 
   const { socket } = connect()
-  let resultsByQuestionByTeam: GameResult
+  let teamsWithPoints: Array<{ id: string; points: number }>
   let questions: Question[] | undefined
 
   let participants: User[] | undefined
-  $: isHost = determineHost(participants)
 
   socket.emit(TriviaEvents.GetUsers)
   socket.on(TriviaEvents.GetUsers, (users: User[]) => {
     participants = users
   })
 
-  socket.on(TriviaEvents.GetGameResult, (_results) => {
-    resultsByQuestionByTeam = _results
+  socket.on(TriviaEvents.GetGameResult, (pointsByTeam) => {
+    const _teamsWithPoints = Object.keys(pointsByTeam).map((teamId) => ({
+      id: teamId,
+      points: pointsByTeam[teamId],
+    }))
+
+    teamsWithPoints = _teamsWithPoints.sort((t1, t2) => t2.points - t1.points)
   })
   socket.emit(TriviaEvents.GetGameResult)
 
@@ -37,29 +41,23 @@
   socket.on(TriviaEvents.ResetGame, () => {
     goto('/trivia')
   })
-  function resetGame() {
-    socket.emit(TriviaEvents.ResetGame)
-  }
 </script>
 
-<div class="p-4">
-  {#if resultsByQuestionByTeam && questions && participants}
-    <h1 class="font-bold text-3xl mb-4">Results</h1>
-    <ul>
-      {#each questions as question, questionIndex}
-        <li class="my-10">
-          <strong>{question.prompt}</strong>
-          <ul class="list-disc ml-8 py-2">
-            {#each participants as participant}
-              <li>
-                <strong>{participant.teamName}:</strong>
-                {(() => {
-                  const thisResult = resultsByQuestionByTeam[questionIndex][participant.id]
-                  return thisResult?.received ? (thisResult?.isCorrect ? '✅' : '❌') : '-'
-                })()}
-              </li>
-            {/each}
-          </ul>
+<div class="p-4 text-white">
+  {#if teamsWithPoints && questions && participants}
+    <h1 class="font-bold text-3xl mb-4 w-52">Results</h1>
+    <ul class="py-2">
+      {#each teamsWithPoints as teamWithScore}
+        <li
+          class={cs(
+            $userId === teamWithScore.id && 'bg-white/20 rounded py-2 my-2',
+            'flex justify-between px-2',
+          )}
+        >
+          <strong>
+            {participants.find((p) => p?.id === teamWithScore.id)?.teamName}:
+          </strong>
+          {teamWithScore.points}
         </li>
       {/each}
     </ul>
@@ -67,7 +65,7 @@
     <p>Loading...</p>
   {/if}
 
-  {#if isHost}
+  <!-- {#if isHost}
     <Button on:click={resetGame} class="mt-16">Start a new game</Button>
-  {/if}
+  {/if} -->
 </div>

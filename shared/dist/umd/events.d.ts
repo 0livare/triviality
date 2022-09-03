@@ -7,7 +7,10 @@ export declare enum TriviaEvents {
     ResetGame = "trivia--reset game",
     NextQuestion = "trivia--next question",
     SubmitAnswer = "trivia--submit answer",
-    GetGameResult = "trivia--get game result"
+    GetGameResult = "trivia--get game result",
+    CorrectAnswer = "trivia--correct answer",
+    GetIsSubmitted = "trivia--get is submitted",
+    SubmitCount = "trivia--submit count"
 }
 export declare enum BuzzEvents {
     AddUser = "buzz--add user",

@@ -13,10 +13,10 @@ const PORT = 3001
 let games = {}
 
 io.on('connection', (socket) => {
-  console.log('CONNECTED', socket.id)
+  console.info('CONNECTED', socket.id)
 
   socket.on(GenericEvents.HostRoom, ({ gameType, userId }) => {
-    let gameCode = generateGameCode(Object.keys(games))
+    let gameCode = '1234' // generateGameCode(Object.keys(games))
     let game
 
     switch (gameType) {
@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
         return
     }
 
-    console.log('host room', { gameCode, gameType, userId })
+    console.info('host room', { gameCode, gameType, userId })
 
     games[gameCode] = game
     socket.join(gameCode)
@@ -41,19 +41,22 @@ io.on('connection', (socket) => {
     let game = games[gameCode]
     if (!game || !teamName) return
 
-    console.log('join room', { teamName, gameCode, userId })
+    console.info('join room', { teamName, gameCode, userId })
 
-    game.addParticipant({ teamName, userId })
+    if (teamName !== 'host') {
+      game.addParticipant({ teamName, userId })
+    }
+
     game.registerEvents({ socket, gameCode, teamName, userId })
     socket.join(gameCode)
     socket.emit(GenericEvents.JoinedRoom, gameCode)
   })
 
   socket.on('disconnect', () => {
-    console.log('DISCONNECTED', socket.id)
+    console.info('DISCONNECTED', socket.id)
   })
 })
 
 server.listen(PORT, () => {
-  console.info(`Listening on http://localhost:${PORT}`)
+  console.info(`Local server is listening on http://localhost:${PORT}`)
 })
