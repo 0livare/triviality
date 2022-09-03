@@ -43,7 +43,10 @@ io.on('connection', (socket) => {
 
     console.info('join room', { teamName, gameCode, userId })
 
-    game.addParticipant({ teamName, userId })
+    if (teamName !== 'host') {
+      game.addParticipant({ teamName, userId })
+    }
+
     game.registerEvents({ socket, gameCode, teamName, userId })
     socket.join(gameCode)
     socket.emit(GenericEvents.JoinedRoom, gameCode)

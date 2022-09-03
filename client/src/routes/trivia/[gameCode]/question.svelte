@@ -4,7 +4,7 @@
   import { page } from '$app/stores'
   import Button from '$lib/button.svelte'
   import { userId } from '$lib/stores'
-  import { connectToTriviaGame, determineHost } from '~/helpers'
+  import { connectToTriviaGame } from '~/helpers'
   import type { Question, User } from '~/types'
   import CorrectAnswerPopup from '$lib/correct-answer-popup.svelte'
 
@@ -20,7 +20,6 @@
   let previousAnswer: { forNumber: number; answer: string }
   let answer: string
   let participants: User[] = []
-  $: isHost = determineHost(participants)
 
   socket.emit(TriviaEvents.GetUsers)
   socket.on(TriviaEvents.GetUsers, (users: User[]) => {

@@ -40,7 +40,7 @@ module.exports = function TriviaGame(io, gameCode) {
 
     socket.on(TriviaEvents.StartGame, () => {
       questionNumber = 1
-      io.emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
+      io.in(gameCode).emit(TriviaEvents.GetCurrentQuestionNumber, questionNumber)
     })
 
     socket.on(TriviaEvents.NextQuestion, () => {
