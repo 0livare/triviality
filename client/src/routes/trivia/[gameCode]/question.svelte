@@ -101,6 +101,7 @@
           class={cs(
             'w-64 text-left mx-auto p-4 my-2 border border-white/50  cursor-pointer ',
             answer === choice ? 'bg-white/30' : 'hover:bg-white/10',
+            'flex gap-4',
           )}
         >
           <input
@@ -109,9 +110,10 @@
             name="answer"
             value={choice}
             disabled={isSubmitted}
-            class="mr-8 peer"
           />
-          {choice}
+          <span>
+            {choice}
+          </span>
         </label>
       {/each}
     </div>
