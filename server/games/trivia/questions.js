@@ -35,14 +35,14 @@ module.exports = [
     answer: 'Social Work',
   },
   {
-    prompt: 'What street did Zach and Scott live on in college?',
-    choices: ['Water', 'Kilbourne', 'Old World 3rd', 'Farwell'],
+    prompt: 'What bar street did Zach and Scott live on in college?',
+    choices: ['Water', 'Brady', 'Old World 3rd', 'Farwell'],
     answer: 'Water',
   },
   {
     prompt: 'Who does Kierstyn have a matching ribcage tattoo with?',
     choices: ['Britni', 'Sierra', 'Erica', 'Kaia'],
-    answer: 'Sierra',
+    answer: 'Erica',
   },
   {
     prompt: 'How many baseball stadiums has Zach been to?',
