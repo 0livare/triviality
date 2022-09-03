@@ -14,7 +14,6 @@
   const { socket } = connect()
   let questions: null | Question[] = null
   let question: Question | undefined
-  let clickedNextAtLeastOnce = false
   $: question = questions?.[questionIndex!]
 
   let participants: User[] = []
@@ -36,13 +35,8 @@
       questionIndex = questionNumber - 1
     } else {
       questionIndex = null
-
-      if (clickedNextAtLeastOnce) {
-        goto(`/trivia/${gameCode}/scoreboard`)
-      }
     }
   })
-
   socket.emit(TriviaEvents.GetCurrentQuestionNumber)
 
   socket.on(TriviaEvents.GetQuestionData, (questionData: Question[]) => {
@@ -60,7 +54,6 @@
     setTimeout(() => {
       submitCount = 0
     }, 250)
-    clickedNextAtLeastOnce = true
   }
 
   function handleReset() {
@@ -90,5 +83,6 @@
     <Button on:click={handleNext}>Go to next question</Button>
   {/if}
 
-  <Button on:click={handleReset}>Reset game</Button>
+  <Button on:click={handleReset} class="mt-8">Reset game</Button>
+  <Button href={`/trivia/${gameCode}/scoreboard`}>Go to scoreboard</Button>
 </div>
