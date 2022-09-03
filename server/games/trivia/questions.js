@@ -4,21 +4,21 @@ module.exports = [
     choices: ['Seth', 'Lauren', 'Deb', 'Sierra'],
     answer: 'Seth',
   },
-  // {
-  //   prompt: 'What were the first sports we played?',
-  //   choices: [
-  //     'Baseball and cross country',
-  //     'Basketball and track',
-  //     'Basketball and soccer',
-  //     'Baseball and soccer',
-  //   ],
-  //   answer: 'Baseball and soccer',
-  // },
-  // {
-  //   prompt: "What is Zach's nickname for his sister?",
-  //   choices: ['Butter', 'Nikki', 'Smidge', 'Little'],
-  //   answer: 'Smidge',
-  // },
+  {
+    prompt: 'What were the first sports we played?',
+    choices: [
+      'Baseball and cross country',
+      'Basketball and track',
+      'Basketball and soccer',
+      'Baseball and soccer',
+    ],
+    answer: 'Baseball and soccer',
+  },
+  {
+    prompt: "What is Zach's nickname for his sister?",
+    choices: ['Butter', 'Nikki', 'Smidge', 'Little'],
+    answer: 'Smidge',
+  },
   // {
   //   prompt: "Who was Kierstyn's first high school boyfriend?",
   //   choices: ['Mike', 'Josh', 'Luke', 'Jon'],
